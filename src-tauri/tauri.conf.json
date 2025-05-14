@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "com.ach_fe.app",
   "build": {
-    "beforeDevCommand": "trunk serve --proxy-backend=http://localhost:3000",
+    "beforeDevCommand": "trunk serve",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "trunk build",
     "frontendDist": "../dist"

@@ -25,7 +25,7 @@ fn boards_by_category(
             <p>{category.clone()}</p>
             <ul>
                 {for boards.iter().map(|board| {
-                    html! { <li><a href={format!("https://boards.4chan.org/{}", board.handle)}>{board.name.clone()}</a></li> }
+                    html! { <li><a href={format!("/boards/{}", board.handle)}>{board.name.clone()}</a></li> }
                 })}
             </ul>
         </div>

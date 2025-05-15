@@ -17,6 +17,15 @@
   -webkit-text-size-adjust: 100%;
 }
 
+body {
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  width: 100%;
+}
+
 p {
   margin: 0;
 }

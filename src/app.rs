@@ -17,9 +17,7 @@ struct BoardsByCategoryProps {
 }
 
 #[function_component(BoardsByCategory)]
-fn boards_by_category(
-    BoardsByCategoryProps { category, boards }: &BoardsByCategoryProps,
-) -> Html {
+fn boards_by_category(BoardsByCategoryProps { category, boards }: &BoardsByCategoryProps) -> Html {
     html! {
         <div class="card-body-section">
             <p>{category.clone()}</p>
@@ -29,6 +27,46 @@ fn boards_by_category(
                 })}
             </ul>
         </div>
+    }
+}
+
+#[function_component(BoardsList)]
+pub fn boards_list() -> Html {
+    let boards = use_state(|| vec![]);
+    {
+        let boards = boards.clone();
+        use_effect_with((), move |_| {
+            let boards = boards.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let fetched_boards: Vec<Board> = Request::get("http://localhost:3000")
+                    .send()
+                    .await
+                    .unwrap()
+                    .json()
+                    .await
+                    .unwrap();
+                boards.set(fetched_boards);
+            });
+            || ()
+        });
+    }
+
+    let get_boards_by_category = |category: &str| {
+        boards
+            .iter()
+            .filter(|board| board.category == category)
+            .cloned()
+            .collect::<Vec<Board>>()
+    };
+
+    let anime_boards = get_boards_by_category("anime");
+    let misc_boards = get_boards_by_category("Misc.");
+
+    html! {
+        <aside>
+            <BoardsByCategory category="Anime" boards={anime_boards} />
+            <BoardsByCategory category="Misc." boards={misc_boards} />
+        </aside>
     }
 }
 

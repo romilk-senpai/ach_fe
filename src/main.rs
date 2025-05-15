@@ -1,9 +1,8 @@
 mod app;
-
 use app::App;
-
-use yew_router::prelude::*;
+use app::BoardsList;
 use yew::prelude::*;
+use yew_router::prelude::*;
 
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
@@ -43,10 +42,13 @@ fn board(BoardProps { handle }: &BoardProps) -> Html {
     let onclick = Callback::from(move |_| navigator.push(&Route::Home));
     let display_text = format!("You are looking at: /{}/", handle);
     html! {
-        <div>
-            <h1>{display_text}</h1>
-            <button {onclick}>{ "Go Home" }</button>
-        </div>
+        <>
+            <BoardsList />
+            <main>
+                <h1>{display_text}</h1>
+                <button {onclick}>{ "Go Home" }</button>
+            </main>
+        </>
     }
 }
 

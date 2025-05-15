@@ -84,6 +84,7 @@ pub fn boards_list() -> Html {
 
     html! {
         <aside>
+            <a href="/">{"Home"}</a>
             <BoardsByCategory category="Anime" boards={anime_boards} link_display={LinkDisplay::Handle} />
             <BoardsByCategory category="Misc." boards={misc_boards} link_display={LinkDisplay::Handle} />
         </aside>

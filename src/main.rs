@@ -37,16 +37,12 @@ struct BoardProps {
 
 #[function_component(Board)]
 fn board(BoardProps { handle }: &BoardProps) -> Html {
-    let navigator = use_navigator().unwrap();
-
-    let onclick = Callback::from(move |_| navigator.push(&Route::Home));
     let display_text = format!("You are looking at: /{}/", handle);
     html! {
         <>
             <BoardsList />
             <main>
                 <h1>{display_text}</h1>
-                <button {onclick}>{ "Go Home" }</button>
             </main>
         </>
     }

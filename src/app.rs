@@ -10,20 +10,40 @@ struct Board {
     handle: String,
 }
 
+#[derive(Clone, PartialEq)]
+enum LinkDisplay {
+    Name,
+    Handle,
+}
+
 #[derive(Properties, PartialEq)]
 struct BoardsByCategoryProps {
     category: String,
     boards: Vec<Board>,
+    link_display: LinkDisplay,
 }
 
 #[function_component(BoardsByCategory)]
-fn boards_by_category(BoardsByCategoryProps { category, boards }: &BoardsByCategoryProps) -> Html {
+fn boards_by_category(
+    BoardsByCategoryProps {
+        category,
+        boards,
+        link_display,
+    }: &BoardsByCategoryProps,
+) -> Html {
+    fn get_link_display(board: &Board, link_display: &LinkDisplay) -> String {
+        match link_display {
+            LinkDisplay::Name => board.name.clone(),
+            LinkDisplay::Handle => format!("/{}/", board.handle),
+        }
+    }
+
     html! {
         <div class="card-body-section">
             <p>{category.clone()}</p>
             <ul>
                 {for boards.iter().map(|board| {
-                    html! { <li><a href={format!("/boards/{}", board.handle)}>{board.name.clone()}</a></li> }
+                    html! { <li><a href={format!("/boards/{}", board.handle)}>{get_link_display(board, link_display)}</a></li> }
                 })}
             </ul>
         </div>
@@ -64,8 +84,8 @@ pub fn boards_list() -> Html {
 
     html! {
         <aside>
-            <BoardsByCategory category="Anime" boards={anime_boards} />
-            <BoardsByCategory category="Misc." boards={misc_boards} />
+            <BoardsByCategory category="Anime" boards={anime_boards} link_display={LinkDisplay::Handle} />
+            <BoardsByCategory category="Misc." boards={misc_boards} link_display={LinkDisplay::Handle} />
         </aside>
     }
 }
@@ -113,8 +133,8 @@ pub fn app() -> Html {
             <div class="card">
                 <p class="card-header">{"Boards:"}</p>
                 <div class="card-body">
-                    <BoardsByCategory category="Anime" boards={anime_boards} />
-                    <BoardsByCategory category="Misc." boards={misc_boards} />
+                    <BoardsByCategory category="Anime" boards={anime_boards} link_display={LinkDisplay::Name} />
+                    <BoardsByCategory category="Misc." boards={misc_boards} link_display={LinkDisplay::Name} />
                 </div>
             </div>
         </main>

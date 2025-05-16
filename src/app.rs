@@ -91,6 +91,33 @@ pub fn boards_list() -> Html {
     }
 }
 
+#[derive(Properties, PartialEq)]
+struct BoardsNavigationProps {
+    board_handles: Vec<String>,
+}
+
+#[function_component(BoardsNavigation)]
+fn boards_navigation(BoardsNavigationProps { board_handles }: &BoardsNavigationProps) -> Html {
+    html! {
+        <nav class="boards-navigation">
+            <span>{ "[" }</span>
+            {for board_handles.iter().enumerate().map(|(index, board_handle)| {
+                html! {
+                    <>
+                        <a href={format!("/boards/{}", board_handle)}>{board_handle}</a>
+                        {if index < board_handles.len() - 1 {
+                            html! { <span>{ " / " }</span> }
+                        } else {
+                            html! {}
+                        }}
+                    </>
+                }
+            })}
+            <span>{ "]" }</span>
+        </nav>
+    }
+}
+
 #[function_component(App)]
 pub fn app() -> Html {
     let boards = use_state(|| vec![]);
@@ -124,20 +151,34 @@ pub fn app() -> Html {
     let anime_boards = get_boards_by_category("anime");
     let misc_boards = get_boards_by_category("Misc.");
 
-    html! {
-        <main class="container">
-            <div>
-                <p>{"What is Ach"}</p>
-                <p>{"Ach is a board built in Haskell and Rust (Tauri + Yew)"}</p>
-            </div>
+    let get_board_handles = || {
+        boards
+            .iter()
+            .map(|board| board.handle.clone())
+            .collect::<Vec<String>>()
+    };
 
-            <div class="boards-card">
-                <div class="boards-card-header"><h3>{"Boards:"}</h3></div>
-                <div class="boards-card-body">
-                    <BoardsByCategory category="Anime" boards={anime_boards} link_display={LinkDisplay::Name} />
-                    <BoardsByCategory category="Misc." boards={misc_boards} link_display={LinkDisplay::Name} />
+    let board_handles = get_board_handles();
+
+    html! {
+        <div class="container">
+            <BoardsNavigation board_handles={board_handles.clone()} />
+            <main>
+                <div>
+                    <p>{"What is Ach"}</p>
+                    <p>{"Ach is a board built in Haskell and Rust (Tauri + Yew)"}</p>
                 </div>
-            </div>
-        </main>
+                <div class="boards-card">
+                    <div class="boards-card-header"><h3>{"Boards:"}</h3></div>
+                    <div class="boards-card-body">
+                        <BoardsByCategory category="Anime" boards={anime_boards} link_display={LinkDisplay::Name} />
+                        <BoardsByCategory category="Misc." boards={misc_boards} link_display={LinkDisplay::Name} />
+                    </div>
+                </div>
+            </main>
+            <footer>
+                <BoardsNavigation board_handles={board_handles.clone()} />
+            </footer>
+        </div>
     }
 }

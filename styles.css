@@ -16,6 +16,12 @@
   --border-color: #f6f6f6;
 }
 
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -23,9 +29,11 @@ body {
 
 main {
   width: 100%;
+  flex: 1;
 }
 
-p, ul {
+p,
+ul {
   margin: 0;
 }
 
@@ -34,7 +42,6 @@ p, ul {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   width: 500px;
-  align-self: center;
 }
 
 .boards-card-header {
@@ -62,10 +69,10 @@ p, ul {
 
 .container {
   margin: 0;
-  padding-top: 1vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   text-align: center;
   row-gap: 16px;
 }

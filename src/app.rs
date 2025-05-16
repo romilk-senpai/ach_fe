@@ -39,8 +39,8 @@ fn boards_by_category(
     }
 
     html! {
-        <div class="card-body-section">
-            <p>{category.clone()}</p>
+        <div class="boards-card-body-section">
+            <b>{category.clone()}</b>
             <ul>
                 {for boards.iter().map(|board| {
                     html! { <li><a href={format!("/boards/{}", board.handle)}>{get_link_display(board, link_display)}</a></li> }
@@ -131,9 +131,9 @@ pub fn app() -> Html {
                 <p>{"Ach is a board built in Haskell and Rust (Tauri + Yew)"}</p>
             </div>
 
-            <div class="card">
-                <p class="card-header">{"Boards:"}</p>
-                <div class="card-body">
+            <div class="boards-card">
+                <div class="boards-card-header"><h3>{"Boards:"}</h3></div>
+                <div class="boards-card-body">
                     <BoardsByCategory category="Anime" boards={anime_boards} link_display={LinkDisplay::Name} />
                     <BoardsByCategory category="Misc." boards={misc_boards} link_display={LinkDisplay::Name} />
                 </div>

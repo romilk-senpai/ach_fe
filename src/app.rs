@@ -52,24 +52,7 @@ fn boards_by_category(
 
 #[function_component(BoardsList)]
 pub fn boards_list() -> Html {
-    let boards = use_state(|| vec![]);
-    {
-        let boards = boards.clone();
-        use_effect_with((), move |_| {
-            let boards = boards.clone();
-            wasm_bindgen_futures::spawn_local(async move {
-                let fetched_boards: Vec<Board> = Request::get("http://localhost:3000")
-                    .send()
-                    .await
-                    .unwrap()
-                    .json()
-                    .await
-                    .unwrap();
-                boards.set(fetched_boards);
-            });
-            || ()
-        });
-    }
+    let boards = use_fetch_board();
 
     let get_boards_by_category = |category: &str| {
         boards
@@ -118,8 +101,9 @@ fn boards_navigation(BoardsNavigationProps { board_handles }: &BoardsNavigationP
     }
 }
 
-#[function_component(App)]
-pub fn app() -> Html {
+#[hook]
+pub fn use_fetch_board() -> Vec<Board> 
+{
     let boards = use_state(|| vec![]);
     {
         let boards = boards.clone();
@@ -139,7 +123,12 @@ pub fn app() -> Html {
             || ()
         });
     }
+    boards.to_vec()
+}
 
+#[function_component(App)]
+pub fn app() -> Html {
+    let boards = use_fetch_board();
     let get_boards_by_category = |category: &str| {
         boards
             .iter()

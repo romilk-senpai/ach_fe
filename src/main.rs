@@ -1,4 +1,6 @@
 mod app;
+mod types;
+mod use_fetch_boards;
 use app::App;
 use app::BoardsList;
 use yew::prelude::*;

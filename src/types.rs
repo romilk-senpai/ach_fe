@@ -4,5 +4,5 @@ use serde::Deserialize;
 pub struct Board {
     pub name: String,
     pub category: String,
-    pub handle: String,
+    pub slug: String,
 }

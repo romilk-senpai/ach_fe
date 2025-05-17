@@ -12,9 +12,9 @@ const server = http.createServer((req, res) => {
   // Default route - return boards list
   res.end(
     JSON.stringify([
-      { name: "Anime & Manga", category: "anime", handle: "a" },
-      { name: "Random", category: "Misc.", handle: "b" },
-      { name: "ROBOT9001", category: "Misc.", handle: "r9k" },
+      { name: "Anime & Manga", category: "anime", slug: "a" },
+      { name: "Random", category: "Misc.", slug: "b" },
+      { name: "ROBOT9001", category: "Misc.", slug: "r9k" },
     ])
   );
 });

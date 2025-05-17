@@ -10,8 +10,8 @@ use yew_router::prelude::*;
 enum Route {
     #[at("/")]
     Home,
-    #[at("/boards/:handle")]
-    Boards { handle: String },
+    #[at("/boards/:slug")]
+    Boards { slug: String },
     #[at("/secure")]
     Secure,
     #[not_found]
@@ -34,12 +34,12 @@ fn secure() -> Html {
 
 #[derive(Properties, PartialEq)]
 struct BoardProps {
-    handle: String,
+    slug: String,
 }
 
 #[function_component(Board)]
-fn board(BoardProps { handle }: &BoardProps) -> Html {
-    let display_text = format!("You are looking at: /{}/", handle);
+fn board(BoardProps { slug }: &BoardProps) -> Html {
+    let display_text = format!("You are looking at: /{}/", slug);
     html! {
         <>
             <BoardsList />
@@ -53,7 +53,7 @@ fn board(BoardProps { handle }: &BoardProps) -> Html {
 fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { <App /> },
-        Route::Boards { handle } => html! { <Board handle={handle} /> },
+        Route::Boards { slug } => html! { <Board slug={slug} /> },
         Route::Secure => html! {
             <Secure />
         },

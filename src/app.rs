@@ -5,7 +5,7 @@ use crate::use_fetch_boards::use_fetch_board;
 #[derive(Clone, PartialEq)]
 enum LinkDisplay {
     Name,
-    Handle,
+    Slug,
 }
 
 #[derive(Properties, PartialEq)]
@@ -26,7 +26,7 @@ fn boards_by_category(
     fn get_link_display(board: &Board, link_display: &LinkDisplay) -> String {
         match link_display {
             LinkDisplay::Name => board.name.clone(),
-            LinkDisplay::Handle => format!("/{}/", board.handle),
+            LinkDisplay::Slug => format!("/{}/", board.slug),
         }
     }
 
@@ -35,7 +35,7 @@ fn boards_by_category(
             <b>{category.clone()}</b>
             <ul>
                 {for boards.iter().map(|board| {
-                    html! { <li><a href={format!("/boards/{}", board.handle)}>{get_link_display(board, link_display)}</a></li> }
+                    html! { <li><a href={format!("/boards/{}", board.slug)}>{get_link_display(board, link_display)}</a></li> }
                 })}
             </ul>
         </div>
@@ -60,27 +60,27 @@ pub fn boards_list() -> Html {
     html! {
         <aside>
             <a href="/">{"Home"}</a>
-            <BoardsByCategory category="Anime" boards={anime_boards} link_display={LinkDisplay::Handle} />
-            <BoardsByCategory category="Misc." boards={misc_boards} link_display={LinkDisplay::Handle} />
+            <BoardsByCategory category="Anime" boards={anime_boards} link_display={LinkDisplay::Slug} />
+            <BoardsByCategory category="Misc." boards={misc_boards} link_display={LinkDisplay::Slug} />
         </aside>
     }
 }
 
 #[derive(Properties, PartialEq)]
 struct BoardsNavigationProps {
-    board_handles: Vec<String>,
+    board_slugs: Vec<String>,
 }
 
 #[function_component(BoardsNavigation)]
-fn boards_navigation(BoardsNavigationProps { board_handles }: &BoardsNavigationProps) -> Html {
+fn boards_navigation(BoardsNavigationProps { board_slugs }: &BoardsNavigationProps) -> Html {
     html! {
         <nav class="boards-navigation">
             <span>{ "[" }</span>
-            {for board_handles.iter().enumerate().map(|(index, board_handle)| {
+            {for board_slugs.iter().enumerate().map(|(index, board_slug)| {
                 html! {
                     <>
-                        <a href={format!("/boards/{}", board_handle)}>{board_handle}</a>
-                        {if index < board_handles.len() - 1 {
+                        <a href={format!("/boards/{}", board_slug)}>{board_slug}</a>
+                        {if index < board_slugs.len() - 1 {
                             html! { <span>{ " / " }</span> }
                         } else {
                             html! {}
@@ -107,18 +107,18 @@ pub fn app() -> Html {
     let anime_boards = get_boards_by_category("anime");
     let misc_boards = get_boards_by_category("Misc.");
 
-    let get_board_handles = || {
+    let get_board_slugs = || {
         boards
             .iter()
-            .map(|board| board.handle.clone())
+            .map(|board| board.slug.clone())
             .collect::<Vec<String>>()
     };
 
-    let board_handles = get_board_handles();
+    let board_slugs = get_board_slugs();
 
     html! {
         <div class="container">
-            <BoardsNavigation board_handles={board_handles.clone()} />
+            <BoardsNavigation board_slugs={board_slugs.clone()} />
             <main>
                 <div>
                     <p>{"What is Ach"}</p>
@@ -133,7 +133,7 @@ pub fn app() -> Html {
                 </div>
             </main>
             <footer>
-                <BoardsNavigation board_handles={board_handles.clone()} />
+                <BoardsNavigation board_slugs={board_slugs.clone()} />
             </footer>
         </div>
     }

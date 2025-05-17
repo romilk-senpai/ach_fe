@@ -5,7 +5,23 @@ const server = http.createServer((req, res) => {
 
   // Handle /boards/:slug route
   if (req.url.startsWith('/boards/')) {
-    res.end(JSON.stringify({}));
+    res.end(JSON.stringify({
+      name: "Random",
+      category: "Misc.",
+      slug: "a",
+      description: "Random board",
+      threads: [
+        {
+          id: "1",
+          num: 1,
+          name: "~sonter-rabryd",
+          subject: "Test Thread",
+          content: "This is a test thread",
+          timestamp: 1716150000,
+          board: "a"
+        }
+      ]
+    }));
     return;
   }
 

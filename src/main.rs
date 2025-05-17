@@ -1,6 +1,8 @@
 mod app;
 mod types;
 mod use_fetch_boards;
+mod use_fetch_board;
+use use_fetch_board::use_fetch_board;
 use app::App;
 use app::BoardsList;
 use yew::prelude::*;
@@ -40,11 +42,19 @@ struct BoardProps {
 #[function_component(Board)]
 fn board(BoardProps { slug }: &BoardProps) -> Html {
     let display_text = format!("You are looking at: /{}/", slug);
+    let board = use_fetch_board(slug);
     html! {
         <>
             <BoardsList />
             <main>
                 <h1>{display_text}</h1>
+                <h2>{board.name.clone()}</h2>
+                <p>{board.description.clone()}</p>
+                <ul>
+                    {for board.threads.iter().map(|thread| {
+                        html! { <li>{thread.name.clone()}</li> }
+                    })}
+                </ul>
             </main>
         </>
     }

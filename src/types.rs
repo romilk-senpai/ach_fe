@@ -5,8 +5,8 @@ pub struct Board {
     pub name: String,
     pub category: String,
     pub slug: String,
-    pub description: String,
-    pub threads: Vec<Thread>,
+    pub description: Option<String>,
+    pub threads: Option<Vec<Thread>>,
 }
 
 #[derive(Clone, PartialEq, Deserialize, Default)]

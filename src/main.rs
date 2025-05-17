@@ -82,9 +82,13 @@ fn board(BoardProps { slug }: &BoardProps) -> Html {
                 <h1>{display_text}</h1>
                 <h2>{board.name.clone()}</h2>
                 <p>{board.description.clone()}</p>
-                {for board.threads.iter().map(|thread| {
-                    html! { <ThreadPost thread={thread.clone()} /> }
-                })}
+                {if let Some(threads) = &board.threads {
+                    threads.iter().map(|thread| {
+                        html! { <ThreadPost thread={thread.clone()} /> }
+                    }).collect::<Html>()
+                } else {
+                    html! { <p>{ "No threads found" }</p> }
+                }}
             </main>
         </>
     }

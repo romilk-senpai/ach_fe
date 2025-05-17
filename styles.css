@@ -67,6 +67,37 @@ ul {
   padding: 0;
 }
 
+.thread-post {
+  border-top: 1px solid var(--border-color);
+  padding: 4px;
+}
+
+.thread-post-op {
+  display: flex;
+}
+
+.thread-post-op-header {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.thread-post-op-subject {
+  color: #b294bb;
+}
+
+.thread-post-op-name {
+  color: #6BAA75;
+}
+
+.thread-post-op-content {
+  flex: 1;
+}
+
+.thread-post-op-content > p {
+  margin: 16px 0;
+}
+
 .container {
   margin: 0;
   display: flex;

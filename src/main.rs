@@ -1,5 +1,6 @@
 mod app;
 mod types;
+use crate::types::Thread;
 mod use_fetch_boards;
 mod use_fetch_board;
 use use_fetch_board::use_fetch_board;
@@ -7,6 +8,7 @@ use app::App;
 use app::BoardsList;
 use yew::prelude::*;
 use yew_router::prelude::*;
+use chrono::{DateTime, TimeZone, Utc, NaiveDateTime};
 
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
@@ -35,6 +37,36 @@ fn secure() -> Html {
 }
 
 #[derive(Properties, PartialEq)]
+struct ThreadPostProps {
+    thread: Thread,
+}
+
+#[function_component(ThreadPost)]
+fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
+    let op_image = "https://i.4cdn.org/k/1747432557629704s.jpg";
+    let naive = NaiveDateTime::from_timestamp_opt(thread.timestamp, 0).unwrap();
+    let datetime: DateTime<Utc> = TimeZone::from_utc_datetime(&Utc, &naive);
+    let thread_date = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
+
+    html! {
+        <div class="thread-post">
+            <div class="thread-post-op">
+                <img alt="OP" src={op_image} loading="lazy" width="200" />
+                <div class="thread-post-op-content">
+                    <div class="thread-post-op-header">
+                        <span class="thread-post-op-subject">{thread.subject.clone()}</span>
+                        <span class="thread-post-op-name">{thread.name.clone()}</span>
+                        <span class="thread-post-op-timestamp">{thread_date}</span>
+                        <span class="thread-post-op-num">{format!("№{}", thread.num)}</span>
+                    </div>
+                    <p>{thread.content.clone()}</p>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
 struct BoardProps {
     slug: String,
 }
@@ -50,11 +82,9 @@ fn board(BoardProps { slug }: &BoardProps) -> Html {
                 <h1>{display_text}</h1>
                 <h2>{board.name.clone()}</h2>
                 <p>{board.description.clone()}</p>
-                <ul>
-                    {for board.threads.iter().map(|thread| {
-                        html! { <li>{thread.name.clone()}</li> }
-                    })}
-                </ul>
+                {for board.threads.iter().map(|thread| {
+                    html! { <ThreadPost thread={thread.clone()} /> }
+                })}
             </main>
         </>
     }

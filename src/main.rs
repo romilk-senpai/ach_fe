@@ -1,6 +1,8 @@
 mod app;
 mod types;
+mod lib;
 use crate::types::Thread;
+use crate::lib::create_urbit_name;
 mod use_fetch_boards;
 mod use_fetch_board;
 use use_fetch_board::use_fetch_board;
@@ -47,6 +49,7 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
     let naive = NaiveDateTime::from_timestamp_opt(thread.timestamp, 0).unwrap();
     let datetime: DateTime<Utc> = TimeZone::from_utc_datetime(&Utc, &naive);
     let thread_date = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
+    let op_name = create_urbit_name();
 
     html! {
         <div class="thread-post">
@@ -55,7 +58,7 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
                 <div class="thread-post-op-content">
                     <div class="thread-post-op-header">
                         <span class="thread-post-op-subject">{thread.subject.clone()}</span>
-                        <span class="thread-post-op-name">{thread.name.clone()}</span>
+                        <span class="thread-post-op-name">{op_name}</span>
                         <span class="thread-post-op-timestamp">{thread_date}</span>
                         <span class="thread-post-op-num">{format!("№{}", thread.num)}</span>
                     </div>

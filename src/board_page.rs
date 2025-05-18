@@ -47,6 +47,38 @@ fn posting_form(PostingFormProps { board }: &PostingFormProps) -> Html {
     }
 }
 
+#[function_component(LastReplies)]
+fn last_replies() -> Html {
+    html! {
+        <div class="thread-post-replies">
+            <div class="thread-post-reply">
+                <img alt="OP" src={"mock"} loading="lazy" width="200" />
+                <div class="thread-post-op-content">
+                <div class="thread-post-op-header">
+                    <span class="thread-post-op-subject">{"Last replies"}</span>
+                    <span class="thread-post-op-name">{"Anonymous"}</span>
+                    <span class="thread-post-op-timestamp">{"2024-05-19 20:20:00"}</span>
+                    <span class="thread-post-op-num">{"№2"}</span>
+                </div>
+                    <p>{"Last reply"}</p>
+                </div>
+            </div>
+            <div class="thread-post-reply">
+                <img alt="OP" src={"mock"} loading="lazy" width="200" />
+                <div class="thread-post-op-content">
+                <div class="thread-post-op-header">
+                    <span class="thread-post-op-subject">{"Last replies"}</span>
+                    <span class="thread-post-op-name">{"Anonymous"}</span>
+                    <span class="thread-post-op-timestamp">{"2024-05-19 20:20:00"}</span>
+                    <span class="thread-post-op-num">{"№3"}</span>
+                </div>
+                    <p>{"Last reply"}</p>
+                </div>
+            </div>
+        </div>
+    }
+}
+
 #[derive(Properties, PartialEq)]
 struct ThreadPostProps {
     thread: Thread,
@@ -74,6 +106,7 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
                     <p>{thread.content.clone()}</p>
                 </div>
             </div>
+            <LastReplies />
         </div>
     }
 }

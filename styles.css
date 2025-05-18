@@ -78,8 +78,22 @@ ul {
   padding: 4px;
 }
 
-.thread-post-op {
+.thread-post-op,
+.thread-post-reply {
   display: flex;
+}
+
+.thread-post-replies {
+  border-left: 1px solid var(--border-color);
+  margin-left: 24px;
+  padding-left: 24px;
+}
+
+.thread-post-reply {
+  width: max-content;
+  margin-top: 8px;
+  padding: 8px;
+  background-color: #282a2e;
 }
 
 .thread-post-op-header {

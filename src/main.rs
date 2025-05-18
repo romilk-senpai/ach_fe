@@ -1,10 +1,10 @@
 mod app;
-mod config;
-mod types;
 mod board_page;
+mod config;
 mod create_urbit_name;
-mod use_fetch_boards;
+mod types;
 mod use_fetch_board;
+mod use_fetch_boards;
 use app::App;
 use app::BoardsList;
 use board_page::BoardPage;

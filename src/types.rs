@@ -28,4 +28,3 @@ pub struct Thread {
     pub timestamp: i64,
     pub board: String,
 }
-

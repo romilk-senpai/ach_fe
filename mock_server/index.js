@@ -5,10 +5,12 @@ const server = http.createServer((req, res) => {
 
   // Handle /boards/:slug route
   if (req.url.startsWith('/boards/')) {
+    const slug = req.url.split('/').pop();
     res.end(JSON.stringify({
+      category_id: 1,
+      id: 1,
       name: "Random",
-      category: "Misc.",
-      slug: "a",
+      slug: slug,
       description: "Random board",
       threads: [
         {
@@ -28,9 +30,9 @@ const server = http.createServer((req, res) => {
   // Default route - return boards list
   res.end(
     JSON.stringify([
-      { name: "Anime & Manga", category: "anime", slug: "a" },
-      { name: "Random", category: "Misc.", slug: "b" },
-      { name: "ROBOT9001", category: "Misc.", slug: "r9k" },
+      { category_id: 1, id: 1, name: "Anime & Manga", slug: "a" },
+      { category_id: 2, id: 2, name: "Random", slug: "b" },
+      { category_id: 2, id: 3, name: "ROBOT9001", slug: "r9k" },
     ])
   );
 });

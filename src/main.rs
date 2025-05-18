@@ -1,12 +1,11 @@
 mod app;
 mod config;
 mod types;
-mod lib;
 use crate::types::Thread;
-use crate::lib::create_urbit_name;
+mod create_urbit_name;
+use crate::create_urbit_name::create_urbit_name;
 mod use_fetch_boards;
 mod use_fetch_board;
-mod use_fetch_boards;
 use app::App;
 use app::BoardsList;
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};

@@ -1,6 +1,6 @@
-use yew::prelude::*;
 use crate::types::Board;
 use crate::use_fetch_boards::use_fetch_board;
+use yew::prelude::*;
 
 #[derive(Clone, PartialEq)]
 enum LinkDisplay {
@@ -46,16 +46,16 @@ fn boards_by_category(
 pub fn boards_list() -> Html {
     let boards = use_fetch_board();
 
-    let get_boards_by_category = |category: &str| {
+    let get_boards_by_category = |category: i32| {
         boards
             .iter()
-            .filter(|board| board.category == category)
+            .filter(|board| board.category_id == category)
             .cloned()
             .collect::<Vec<Board>>()
     };
 
-    let anime_boards = get_boards_by_category("anime");
-    let misc_boards = get_boards_by_category("Misc.");
+    let anime_boards = get_boards_by_category(1);
+    let misc_boards = get_boards_by_category(2);
 
     html! {
         <aside>
@@ -96,16 +96,16 @@ fn boards_navigation(BoardsNavigationProps { board_slugs }: &BoardsNavigationPro
 #[function_component(App)]
 pub fn app() -> Html {
     let boards = use_fetch_board();
-    let get_boards_by_category = |category: &str| {
+    let get_boards_by_category = |category: i32| {
         boards
             .iter()
-            .filter(|board| board.category == category)
+            .filter(|board| board.category_id == category)
             .cloned()
             .collect::<Vec<Board>>()
     };
 
-    let anime_boards = get_boards_by_category("anime");
-    let misc_boards = get_boards_by_category("Misc.");
+    let anime_boards = get_boards_by_category(1);
+    let misc_boards = get_boards_by_category(2);
 
     let get_board_slugs = || {
         boards

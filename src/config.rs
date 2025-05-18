@@ -1,4 +1,3 @@
-use gloo_net::http::Request;
 use serde::Deserialize;
 use yew::prelude::*;
 
@@ -8,26 +7,13 @@ pub struct Config {
     pub base_url: String,
 }
 
+const CONFIG: &str = include_str!("../config/config.txt");
+
 #[hook]
 pub fn use_config() -> Config {
-    let config = use_state(|| Config::default());
+    let config = Config {
+        base_url: CONFIG.split("=").nth(1).unwrap().to_string(),
+    };
 
-    {
-        let config = config.clone();
-        use_effect_with((), move |_| {
-            let config = config.clone();
-            wasm_bindgen_futures::spawn_local(async move {
-                let fetched_config: Config = Request::get("./config/config.json")
-                    .send()
-                    .await
-                    .unwrap()
-                    .json()
-                    .await
-                    .unwrap();
-                config.set(fetched_config);
-            });
-            || ()
-        });
-    }
-    (*config).clone()
+    config
 }

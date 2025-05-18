@@ -1,8 +1,8 @@
 use crate::create_urbit_name::create_urbit_name;
+use crate::transform_date::transform_date;
 use crate::types::{Board, Post, Thread};
 use crate::use_fetch_board::use_fetch_board;
 use crate::BoardsList;
-use crate::transform_date::transform_date;
 use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
@@ -47,7 +47,6 @@ fn posting_form(PostingFormProps { board }: &PostingFormProps) -> Html {
     }
 }
 
-
 #[derive(Properties, PartialEq)]
 struct ReplyProps {
     reply: Post,
@@ -58,7 +57,7 @@ fn reply(ReplyProps { reply }: &ReplyProps) -> Html {
     let reply_date = transform_date(&reply.created_at);
     let reply_name = match &reply.author {
         author if !author.is_empty() => author.clone(),
-        _ => create_urbit_name()
+        _ => create_urbit_name(),
     };
 
     html! {
@@ -97,7 +96,6 @@ fn last_replies(LastRepliesProps { last_replies }: &LastRepliesProps) -> Html {
     }
 }
 
-
 #[derive(Properties, PartialEq)]
 struct ThreadPostProps {
     thread: Thread,
@@ -110,7 +108,7 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
     let thread_date = transform_date(&op_post.created_at);
     let op_name = match &op_post.author {
         author if !author.is_empty() => author.clone(),
-        _ => create_urbit_name()
+        _ => create_urbit_name(),
     };
 
     html! {

@@ -31,8 +31,8 @@ pub struct Thread {
 #[derive(Clone, PartialEq, Deserialize, Default)]
 pub struct Post {
     pub author: String,
-    // #[serde(rename = "createdAt")]
-    // pub created_at: i64,
+    #[serde(rename = "createdAt")]
+    pub created_at: String,
     pub id: i32,
     pub subject: Option<String>,
     pub content: String,

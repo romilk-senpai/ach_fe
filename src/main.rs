@@ -5,6 +5,7 @@ mod create_urbit_name;
 mod types;
 mod use_fetch_board;
 mod use_fetch_boards;
+mod transform_date;
 use app::App;
 use app::BoardsList;
 use board_page::BoardPage;

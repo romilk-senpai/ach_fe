@@ -2,7 +2,7 @@ use crate::create_urbit_name::create_urbit_name;
 use crate::types::{Board, Thread};
 use crate::use_fetch_board::use_fetch_board;
 use crate::BoardsList;
-use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use crate::transform_date::transform_date;
 use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
@@ -88,9 +88,7 @@ struct ThreadPostProps {
 fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
     let op_post = thread.op_post.clone();
     let op_image = "https://i.4cdn.org/k/1747432557629704s.jpg";
-    // let naive = NaiveDateTime::from_timestamp_opt(op_post.created_at, 0).unwrap();
-    // let datetime: DateTime<Utc> = TimeZone::from_utc_datetime(&Utc, &naive);
-    // let thread_date = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
+    let thread_date = transform_date(&op_post.created_at);
     let op_name = match &op_post.author {
         author if !author.is_empty() => author.clone(),
         _ => create_urbit_name()
@@ -104,7 +102,7 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
                     <div class="thread-post-op-header">
                         <span class="thread-post-op-subject">{op_post.subject}</span>
                         <span class="thread-post-op-name">{op_name}</span>
-                        <span class="thread-post-op-timestamp">{""}</span>
+                        <span class="thread-post-op-timestamp">{thread_date}</span>
                         <span class="thread-post-op-num">{format!("№{}", op_post.id)}</span>
                     </div>
                     <p>{op_post.content}</p>

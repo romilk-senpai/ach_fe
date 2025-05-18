@@ -1,10 +1,10 @@
-use crate::types::Board;
+use crate::types::BoardInfo;
 use gloo_console::log;
 use gloo_net::http::Request;
 use yew::prelude::*;
 
 #[hook]
-pub fn use_fetch_board() -> Vec<Board> {
+pub fn use_fetch_board() -> Vec<BoardInfo> {
     use crate::config::use_config;
 
     let config = use_config();
@@ -16,7 +16,7 @@ pub fn use_fetch_board() -> Vec<Board> {
         use_effect_with((), move |_| {
             let boards = boards.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_boards: Vec<Board> = Request::get(&url)
+                let fetched_boards: Vec<BoardInfo> = Request::get(&url)
                     .send()
                     .await
                     .unwrap()

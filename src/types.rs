@@ -1,17 +1,18 @@
 use serde::Deserialize;
 
 #[derive(Clone, PartialEq, Deserialize, Default)]
-pub struct Board {
-    #[serde(rename = "categoryId")] 
-    pub category_id: i32,
+pub struct BoardInfo {
+    #[serde(rename = "categoryName")]
+    pub category_id: String,
     pub id: i32,
     pub name: String,
     pub slug: String,
 }
 
 #[derive(Clone, PartialEq, Deserialize, Default)]
-pub struct BoardExt {
-    pub category_id: i32,
+pub struct Board {
+    #[serde(rename = "categoryName")]
+    pub category_id: String,
     pub id: i32,
     pub name: String,
     pub slug: String,
@@ -21,11 +22,18 @@ pub struct BoardExt {
 
 #[derive(Clone, PartialEq, Deserialize, Default)]
 pub struct Thread {
-    pub id: String,
-    pub num: i64,
-    pub name: String,
-    pub subject: String,
+    #[serde(rename = "opPost")]
+    pub op_post: Post,
+    #[serde(rename = "lastReplies")]
+    pub last_replies: Vec<Post>,
+}
+
+#[derive(Clone, PartialEq, Deserialize, Default)]
+pub struct Post {
+    pub author: String,
+    // #[serde(rename = "createdAt")]
+    // pub created_at: i64,
+    pub id: i32,
+    pub subject: Option<String>,
     pub content: String,
-    pub timestamp: i64,
-    pub board: String,
 }

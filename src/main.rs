@@ -1,16 +1,18 @@
 mod app;
+mod config;
 mod types;
 mod lib;
 use crate::types::Thread;
 use crate::lib::create_urbit_name;
 mod use_fetch_boards;
 mod use_fetch_board;
-use use_fetch_board::use_fetch_board;
+mod use_fetch_boards;
 use app::App;
 use app::BoardsList;
+use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use use_fetch_board::use_fetch_board;
 use yew::prelude::*;
 use yew_router::prelude::*;
-use chrono::{DateTime, TimeZone, Utc, NaiveDateTime};
 
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
@@ -85,8 +87,8 @@ fn board(BoardProps { slug }: &BoardProps) -> Html {
                 <h1>{display_text}</h1>
                 <h2>{board.name.clone()}</h2>
                 <p>{board.description.clone()}</p>
-                {if let Some(threads) = &board.threads {
-                    threads.iter().map(|thread| {
+                {if board.threads.len() > 0 {
+                    board.threads.iter().map(|thread| {
                         html! { <ThreadPost thread={thread.clone()} /> }
                     }).collect::<Html>()
                 } else {

@@ -30,13 +30,15 @@ const server = http.createServer((req, res) => {
   // Default route - return boards list
   res.end(
     JSON.stringify([
-      { category_id: 1, id: 1, name: "Anime & Manga", slug: "a" },
-      { category_id: 2, id: 2, name: "Random", slug: "b" },
-      { category_id: 2, id: 3, name: "ROBOT9001", slug: "r9k" },
+      { categoryId: 1, id: 1, name: "Anime & Manga", slug: "a" },
+      { categoryId: 2, id: 2, name: "Random", slug: "b" },
+      { categoryId: 2, id: 3, name: "ROBOT9001", slug: "r9k" },
     ])
   );
 });
 
-server.listen(3000, () => {
-  console.log("Server is running on port 3000");
+const port = 8080;
+
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

@@ -2,6 +2,7 @@ use serde::Deserialize;
 
 #[derive(Clone, PartialEq, Deserialize, Default)]
 pub struct Board {
+    #[serde(rename = "categoryId")] 
     pub category_id: i32,
     pub id: i32,
     pub name: String,

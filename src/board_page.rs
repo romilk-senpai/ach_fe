@@ -99,10 +99,11 @@ fn last_replies(LastRepliesProps { last_replies }: &LastRepliesProps) -> Html {
 #[derive(Properties, PartialEq)]
 struct ThreadPostProps {
     thread: Thread,
+    board: Board,
 }
 
 #[function_component(ThreadPost)]
-fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
+fn thread_post(ThreadPostProps { thread, board }: &ThreadPostProps) -> Html {
     let op_post = thread.op_post.clone();
     let op_image = "https://i.4cdn.org/k/1747432557629704s.jpg";
     let thread_date = transform_date(&op_post.created_at);
@@ -110,6 +111,8 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
         author if !author.is_empty() => author.clone(),
         _ => create_urbit_name(),
     };
+
+    let thread_url = format!("/boards/{}/thread/{}", board.slug, op_post.id);
 
     html! {
         <div class="thread-post">
@@ -120,7 +123,7 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
                         <span class="thread-post-op-subject">{op_post.subject}</span>
                         <span class="thread-post-op-name">{op_name}</span>
                         <span class="thread-post-op-timestamp">{thread_date}</span>
-                        <span class="thread-post-op-num">{format!("№{}", op_post.id)}</span>
+                        <a href={thread_url.clone()} class="thread-post-op-num">{format!("№{}", op_post.id)}</a>
                     </div>
                     <p>{op_post.content}</p>
                 </div>
@@ -149,7 +152,7 @@ pub fn board_page(BoardPageProps { slug }: &BoardPageProps) -> Html {
                 <PostingForm board={board.clone()} />
                 {if board.threads.len() > 0 {
                     board.threads.iter().map(|thread| {
-                        html! { <ThreadPost thread={thread.clone()} /> }
+                        html! { <ThreadPost thread={thread.clone()} board={board.clone()} /> }
                     }).collect::<Html>()
                 } else {
                     html! { <p>{ "No threads found" }</p> }

@@ -5,7 +5,7 @@ const server = http.createServer((req, res) => {
 
   // Handle /boards/:slug route
   if (req.url.startsWith("/board?slug=")) {
-    const slug = req.url.split("=")[1];
+    const slug = req.url.split("=")[1].replace("&", "");
     res.end(
       JSON.stringify({
         categoryName: "Misc.",

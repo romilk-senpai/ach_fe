@@ -1,4 +1,4 @@
-use crate::types::Board;
+use crate::types::BoardInfo;
 use crate::use_fetch_boards::use_fetch_board;
 use yew::prelude::*;
 
@@ -11,7 +11,7 @@ enum LinkDisplay {
 #[derive(Properties, PartialEq)]
 struct BoardsByCategoryProps {
     category: String,
-    boards: Vec<Board>,
+    boards: Vec<BoardInfo>,
     link_display: LinkDisplay,
 }
 
@@ -23,7 +23,7 @@ fn boards_by_category(
         link_display,
     }: &BoardsByCategoryProps,
 ) -> Html {
-    fn get_link_display(board: &Board, link_display: &LinkDisplay) -> String {
+    fn get_link_display(board: &BoardInfo, link_display: &LinkDisplay) -> String {
         match link_display {
             LinkDisplay::Name => board.name.clone(),
             LinkDisplay::Slug => format!("/{}/", board.slug),
@@ -46,16 +46,16 @@ fn boards_by_category(
 pub fn boards_list() -> Html {
     let boards = use_fetch_board();
 
-    let get_boards_by_category = |category: i32| {
+    let get_boards_by_category = |category: &str| {
         boards
             .iter()
             .filter(|board| board.category_id == category)
             .cloned()
-            .collect::<Vec<Board>>()
+            .collect::<Vec<BoardInfo>>()
     };
 
-    let anime_boards = get_boards_by_category(1);
-    let misc_boards = get_boards_by_category(2);
+    let anime_boards = get_boards_by_category("Japanese Culture");
+    let misc_boards = get_boards_by_category("Interests");
 
     html! {
         <aside>
@@ -96,16 +96,16 @@ fn boards_navigation(BoardsNavigationProps { board_slugs }: &BoardsNavigationPro
 #[function_component(App)]
 pub fn app() -> Html {
     let boards = use_fetch_board();
-    let get_boards_by_category = |category: i32| {
+    let get_boards_by_category = |category: &str| {
         boards
             .iter()
             .filter(|board| board.category_id == category)
             .cloned()
-            .collect::<Vec<Board>>()
+            .collect::<Vec<BoardInfo>>()
     };
 
-    let anime_boards = get_boards_by_category(1);
-    let misc_boards = get_boards_by_category(2);
+    let anime_boards = get_boards_by_category("Japanese Culture");
+    let misc_boards = get_boards_by_category("Interests");
 
     let get_board_slugs = || {
         boards

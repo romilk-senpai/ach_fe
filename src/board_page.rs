@@ -1,5 +1,5 @@
 use crate::create_urbit_name::create_urbit_name;
-use crate::types::{BoardExt, Thread};
+use crate::types::{Board, Thread};
 use crate::use_fetch_board::use_fetch_board;
 use crate::BoardsList;
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
@@ -7,7 +7,7 @@ use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
 struct PostingFormProps {
-    board: BoardExt,
+    board: Board,
 }
 
 #[function_component(PostingForm)]
@@ -86,10 +86,11 @@ struct ThreadPostProps {
 
 #[function_component(ThreadPost)]
 fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
+    let op_post = thread.op_post.clone();
     let op_image = "https://i.4cdn.org/k/1747432557629704s.jpg";
-    let naive = NaiveDateTime::from_timestamp_opt(thread.timestamp, 0).unwrap();
-    let datetime: DateTime<Utc> = TimeZone::from_utc_datetime(&Utc, &naive);
-    let thread_date = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
+    // let naive = NaiveDateTime::from_timestamp_opt(op_post.created_at, 0).unwrap();
+    // let datetime: DateTime<Utc> = TimeZone::from_utc_datetime(&Utc, &naive);
+    // let thread_date = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
     let op_name = create_urbit_name();
 
     html! {
@@ -98,12 +99,12 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
                 <img alt="OP" src={op_image} loading="lazy" width="200" />
                 <div class="thread-post-op-content">
                     <div class="thread-post-op-header">
-                        <span class="thread-post-op-subject">{thread.subject.clone()}</span>
-                        <span class="thread-post-op-name">{op_name}</span>
-                        <span class="thread-post-op-timestamp">{thread_date}</span>
-                        <span class="thread-post-op-num">{format!("№{}", thread.num)}</span>
+                        <span class="thread-post-op-subject">{op_post.subject}</span>
+                        <span class="thread-post-op-name">{op_post.author}</span>
+                        <span class="thread-post-op-timestamp">{""}</span>
+                        <span class="thread-post-op-num">{format!("№{}", op_post.id)}</span>
                     </div>
-                    <p>{thread.content.clone()}</p>
+                    <p>{op_post.content}</p>
                 </div>
             </div>
             <LastReplies />

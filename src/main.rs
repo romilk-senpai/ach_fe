@@ -1,6 +1,7 @@
 mod app;
 mod config;
 mod types;
+mod board_page;
 use crate::types::Thread;
 mod create_urbit_name;
 use crate::create_urbit_name::create_urbit_name;
@@ -8,8 +9,8 @@ mod use_fetch_boards;
 mod use_fetch_board;
 use app::App;
 use app::BoardsList;
+use board_page::BoardPage;
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
-use use_fetch_board::use_fetch_board;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -70,38 +71,10 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
     }
 }
 
-#[derive(Properties, PartialEq)]
-struct BoardProps {
-    slug: String,
-}
-
-#[function_component(Board)]
-fn board(BoardProps { slug }: &BoardProps) -> Html {
-    let display_text = format!("You are looking at: /{}/", slug);
-    let board = use_fetch_board(slug);
-    html! {
-        <>
-            <BoardsList />
-            <main>
-                <h1>{display_text}</h1>
-                <h2>{board.name.clone()}</h2>
-                <p>{board.description.clone()}</p>
-                {if board.threads.len() > 0 {
-                    board.threads.iter().map(|thread| {
-                        html! { <ThreadPost thread={thread.clone()} /> }
-                    }).collect::<Html>()
-                } else {
-                    html! { <p>{ "No threads found" }</p> }
-                }}
-            </main>
-        </>
-    }
-}
-
 fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { <App /> },
-        Route::Boards { slug } => html! { <Board slug={slug} /> },
+        Route::Boards { slug } => html! { <BoardPage slug={slug} /> },
         Route::Secure => html! {
             <Secure />
         },

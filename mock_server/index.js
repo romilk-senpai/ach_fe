@@ -23,6 +23,13 @@ const server = http.createServer((req, res) => {
                 content: "sample post 1",
                 createdAt: "2025-05-18T15:41:20.936326Z",
               },
+              {
+                id: 2,
+                author: "ayanokojimode",
+                subject: "topic 2",
+                content: "sample post 2",
+                createdAt: "2025-05-18T15:41:20.936326Z",
+              },
             ],
             opPost: {
               id: 1,

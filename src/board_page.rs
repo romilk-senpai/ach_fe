@@ -1,5 +1,5 @@
 use crate::create_urbit_name::create_urbit_name;
-use crate::types::{Board, Thread};
+use crate::types::{Board, Post, Thread};
 use crate::use_fetch_board::use_fetch_board;
 use crate::BoardsList;
 use crate::transform_date::transform_date;
@@ -47,37 +47,56 @@ fn posting_form(PostingFormProps { board }: &PostingFormProps) -> Html {
     }
 }
 
-#[function_component(LastReplies)]
-fn last_replies() -> Html {
+
+#[derive(Properties, PartialEq)]
+struct ReplyProps {
+    reply: Post,
+}
+
+#[function_component(Reply)]
+fn reply(ReplyProps { reply }: &ReplyProps) -> Html {
+    let reply_date = transform_date(&reply.created_at);
+    let reply_name = match &reply.author {
+        author if !author.is_empty() => author.clone(),
+        _ => create_urbit_name()
+    };
+
     html! {
-        <div class="thread-post-replies">
-            <div class="thread-post-reply">
-                <img alt="OP" src={"mock"} loading="lazy" width="200" />
-                <div class="thread-post-op-content">
-                <div class="thread-post-op-header">
-                    <span class="thread-post-op-subject">{"Last replies"}</span>
-                    <span class="thread-post-op-name">{"Anonymous"}</span>
-                    <span class="thread-post-op-timestamp">{"2024-05-19 20:20:00"}</span>
-                    <span class="thread-post-op-num">{"№2"}</span>
+        <div class="thread-post-reply">
+            <img alt="reply" src={"mock"} loading="lazy" width="200" />
+            <div class="thread-post-op-content">
+            <div class="thread-post-op-header">
+                <span class="thread-post-op-subject">{reply.subject.clone()}</span>
+                <span class="thread-post-op-name">{reply_name}</span>
+                <span class="thread-post-op-timestamp">{reply_date}</span>
+                    <span class="thread-post-op-num">{format!("№{}", reply.id)}</span>
                 </div>
-                    <p>{"Last reply"}</p>
-                </div>
-            </div>
-            <div class="thread-post-reply">
-                <img alt="OP" src={"mock"} loading="lazy" width="200" />
-                <div class="thread-post-op-content">
-                <div class="thread-post-op-header">
-                    <span class="thread-post-op-subject">{"Last replies"}</span>
-                    <span class="thread-post-op-name">{"Anonymous"}</span>
-                    <span class="thread-post-op-timestamp">{"2024-05-19 20:20:00"}</span>
-                    <span class="thread-post-op-num">{"№3"}</span>
-                </div>
-                    <p>{"Last reply"}</p>
-                </div>
+                <p>{reply.content.clone()}</p>
             </div>
         </div>
     }
 }
+
+#[derive(Properties, PartialEq)]
+struct LastRepliesProps {
+    last_replies: Vec<Post>,
+}
+
+#[function_component(LastReplies)]
+fn last_replies(LastRepliesProps { last_replies }: &LastRepliesProps) -> Html {
+    html! {
+        <div class="thread-post-replies">
+            {if last_replies.len() > 0 {
+                last_replies.iter().map(|reply| {
+                    html! { <Reply reply={reply.clone()} /> }
+                }).collect::<Html>()
+            } else {
+                html! { <></> }
+            }}
+        </div>
+    }
+}
+
 
 #[derive(Properties, PartialEq)]
 struct ThreadPostProps {
@@ -108,7 +127,7 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
                     <p>{op_post.content}</p>
                 </div>
             </div>
-            <LastReplies />
+            <LastReplies last_replies={thread.last_replies.clone()} />
         </div>
     }
 }

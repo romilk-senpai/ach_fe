@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
             ],
             opPost: {
               id: 1,
-              author: "~sonter-rabryd",
+              author: "",
               subject: "Test Thread",
               content: "This is a test thread",
               createdAt: "2025-05-18T15:41:20.936326Z",

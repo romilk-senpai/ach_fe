@@ -91,7 +91,10 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
     // let naive = NaiveDateTime::from_timestamp_opt(op_post.created_at, 0).unwrap();
     // let datetime: DateTime<Utc> = TimeZone::from_utc_datetime(&Utc, &naive);
     // let thread_date = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
-    let op_name = create_urbit_name();
+    let op_name = match &op_post.author {
+        author if !author.is_empty() => author.clone(),
+        _ => create_urbit_name()
+    };
 
     html! {
         <div class="thread-post">
@@ -100,7 +103,7 @@ fn thread_post(ThreadPostProps { thread }: &ThreadPostProps) -> Html {
                 <div class="thread-post-op-content">
                     <div class="thread-post-op-header">
                         <span class="thread-post-op-subject">{op_post.subject}</span>
-                        <span class="thread-post-op-name">{op_post.author}</span>
+                        <span class="thread-post-op-name">{op_name}</span>
                         <span class="thread-post-op-timestamp">{""}</span>
                         <span class="thread-post-op-num">{format!("№{}", op_post.id)}</span>
                     </div>

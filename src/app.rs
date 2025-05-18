@@ -1,5 +1,5 @@
 use crate::types::BoardInfo;
-use crate::use_fetch_boards::use_fetch_board;
+use crate::use_fetch_boards::use_fetch_boards;
 use yew::prelude::*;
 
 #[derive(Clone, PartialEq)]
@@ -44,7 +44,7 @@ fn boards_by_category(
 
 #[function_component(BoardsList)]
 pub fn boards_list() -> Html {
-    let boards = use_fetch_board();
+    let boards = use_fetch_boards();
 
     let get_boards_by_category = |category: &str| {
         boards
@@ -95,7 +95,7 @@ fn boards_navigation(BoardsNavigationProps { board_slugs }: &BoardsNavigationPro
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let boards = use_fetch_board();
+    let boards = use_fetch_boards();
     let get_boards_by_category = |category: &str| {
         boards
             .iter()

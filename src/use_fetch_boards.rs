@@ -4,7 +4,7 @@ use gloo_net::http::Request;
 use yew::prelude::*;
 
 #[hook]
-pub fn use_fetch_board() -> Vec<BoardInfo> {
+pub fn use_fetch_boards() -> Vec<BoardInfo> {
     use crate::config::use_config;
 
     let config = use_config();

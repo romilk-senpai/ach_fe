@@ -1,6 +1,30 @@
 use crate::types::{Board, BoardInfo, Thread};
 use gloo_net::http::Request;
+use wasm_bindgen::JsValue;
 use yew::prelude::*;
+
+#[hook]
+pub fn use_send_post_request() -> Callback<()> {
+    use crate::config::use_config;
+    let config = use_config();
+    let url = format!("{}/post", config.base_url);
+
+    Callback::from(move |_| {
+        let url = url.clone();
+        wasm_bindgen_futures::spawn_local(async move {
+            let body = JsValue::from_str("test");
+            let _ = Request::post(&url)
+                .body(body)
+                .unwrap()
+                .send()
+                .await
+                .unwrap()
+                .text()
+                .await
+                .unwrap();
+        });
+    })
+}
 
 #[hook]
 pub fn use_fetch<T: Clone + Default + 'static + serde::de::DeserializeOwned>(

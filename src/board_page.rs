@@ -1,6 +1,6 @@
 use crate::components::BoardsList;
 use crate::create_urbit_name::create_urbit_name;
-use crate::hooks::use_fetch_board;
+use crate::hooks::{use_fetch_board, use_send_post_request};
 use crate::transform_date::transform_date;
 use crate::types::{Board, Post, Thread};
 use yew::prelude::*;
@@ -13,9 +13,14 @@ struct PostingFormProps {
 #[function_component(PostingForm)]
 fn posting_form(PostingFormProps { board }: &PostingFormProps) -> Html {
     let show_form = use_state(|| false);
+    let send_post = use_send_post_request();
 
     if *show_form {
         html! {
+            <>
+            <button onclick={move |_| {
+                send_post.emit(());
+            }}>{"Post"}</button>
             <form class="posting-form">
                 <div class="form-group">
                     <label for="name">{"Name"}</label>
@@ -39,6 +44,7 @@ fn posting_form(PostingFormProps { board }: &PostingFormProps) -> Html {
                 </div>
                 <button type="submit">{"Post"}</button>
             </form>
+            </>
         }
     } else {
         html! {

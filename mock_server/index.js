@@ -2,6 +2,11 @@ const http = require("http");
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { "Access-Control-Allow-Origin": "*" });
+  // Handle POST request to /post
+  if (req.method === "POST" && req.url === "/post") {
+    res.end("OK");
+    return;
+  }
 
   // Handle /boards/:slug route
   if (req.url.startsWith("/board?slug=")) {

@@ -3,85 +3,51 @@ use gloo_net::http::Request;
 use yew::prelude::*;
 
 #[hook]
-pub fn use_fetch_board(slug: &String) -> Board {
-    use crate::config::use_config;
+pub fn use_fetch<T: Clone + Default + 'static + serde::de::DeserializeOwned>(
+    url: String,
+) -> T {
+    let data = use_state(|| T::default());
 
-    let config = use_config();
-    let board = use_state(|| Board::default());
-
-    let url = format!("{}/board?slug={}", config.base_url, slug);
     {
-        let board = board.clone();
-        use_effect_with((), move |_| {
-            let board = board.clone();
+        let data = data.clone();
+        use_effect_with(url.clone(), move |_| {
+            let data = data.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_board: Board = Request::get(&url)
+                let fetched_data: T = Request::get(&url)
                     .send()
                     .await
                     .unwrap()
                     .json()
                     .await
                     .unwrap();
-                board.set(fetched_board);
+                data.set(fetched_data);
             });
             || ()
         });
     }
-    (*board).clone()
+    (*data).clone()
+}
+
+#[hook]
+pub fn use_fetch_board(slug: &String) -> Board {
+    use crate::config::use_config;
+    let config = use_config();
+    let url = format!("{}/board?slug={}", config.base_url, slug);
+    use_fetch(url)
 }
 
 #[hook]
 pub fn use_fetch_boards() -> Vec<BoardInfo> {
     use crate::config::use_config;
-
     let config = use_config();
-    let boards = use_state(|| vec![]);
-
     let url = format!("{}/boards", config.base_url);
-    {
-        let boards = boards.clone();
-        use_effect_with((), move |_| {
-            let boards = boards.clone();
-            wasm_bindgen_futures::spawn_local(async move {
-                let fetched_boards: Vec<BoardInfo> = Request::get(&url)
-                    .send()
-                    .await
-                    .unwrap()
-                    .json()
-                    .await
-                    .unwrap();
-                boards.set(fetched_boards);
-            });
-            || ()
-        });
-    }
-    boards.to_vec()
+    use_fetch(url)
 }
 
 #[hook]
 pub fn use_fetch_thread(slug: &String, id: &String) -> Thread {
     use crate::config::use_config;
-
     let config = use_config();
-    let thread = use_state(|| Thread::default());
-
     let url = format!("{}/board?slug={}&id={}", config.base_url, slug, id);
-    {
-        let thread = thread.clone();
-        use_effect_with((), move |_| {
-            let thread = thread.clone();
-            wasm_bindgen_futures::spawn_local(async move {
-                let fetched_thread: Thread = Request::get(&url)
-                    .send()
-                    .await
-                    .unwrap()
-                    .json()
-                    .await
-                    .unwrap();
-                thread.set(fetched_thread);
-            });
-            || ()
-        });
-    }
-    (*thread).clone()
+    use_fetch(url)
 }

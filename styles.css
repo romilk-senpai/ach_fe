@@ -14,6 +14,7 @@
   -webkit-text-size-adjust: 100%;
 
   --border-color: #f6f6f6;
+  --border-color-opacity: #f6f6f650;
 }
 
 html,
@@ -75,7 +76,7 @@ ul {
 
 .thread-post {
   border-top: 1px solid var(--border-color);
-  padding: 4px;
+  padding: 12px 4px;
 }
 
 .thread-post-op,
@@ -84,7 +85,7 @@ ul {
 }
 
 .thread-post-replies {
-  border-left: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color-opacity);
   margin-left: 24px;
   padding-left: 24px;
 }

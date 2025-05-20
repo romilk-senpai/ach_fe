@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use yew::prelude::*;
 
 #[derive(Clone, PartialEq, Deserialize, Default)]
 pub struct BoardInfo {
@@ -36,4 +37,14 @@ pub struct Post {
     pub id: i32,
     pub subject: Option<String>,
     pub content: String,
+}
+
+#[derive(Properties, PartialEq, Clone)]
+pub struct FormInfo {
+    pub slug: String,
+    pub name: String,
+    pub options: String,
+    pub subject: String,
+    pub comment: String,
+    pub file: String,
 }

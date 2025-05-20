@@ -1,18 +1,24 @@
-use crate::types::{Board, BoardInfo, Thread};
+use crate::types::{Board, BoardInfo, FormInfo, Thread};
 use gloo_net::http::Request;
 use wasm_bindgen::JsValue;
 use yew::prelude::*;
 
 #[hook]
-pub fn use_send_post_request() -> Callback<()> {
+pub fn use_send_post_request(form_info: FormInfo) -> Callback<()> {
     use crate::config::use_config;
     let config = use_config();
     let url = format!("{}/post", config.base_url);
 
+    let body = format!(
+        "slug={}&name={}&options={}&subject={}&comment={}&file={}",
+        form_info.slug, form_info.name, form_info.options, form_info.subject, form_info.comment, form_info.file
+    );
+
     Callback::from(move |_| {
         let url = url.clone();
+        let body = body.clone();
         wasm_bindgen_futures::spawn_local(async move {
-            let body = JsValue::from_str("test");
+            let body = JsValue::from_str(&body);
             let _ = Request::post(&url)
                 .body(body)
                 .unwrap()
@@ -27,9 +33,7 @@ pub fn use_send_post_request() -> Callback<()> {
 }
 
 #[hook]
-pub fn use_fetch<T: Clone + Default + 'static + serde::de::DeserializeOwned>(
-    url: String,
-) -> T {
+pub fn use_fetch<T: Clone + Default + 'static + serde::de::DeserializeOwned>(url: String) -> T {
     let data = use_state(|| T::default());
 
     {

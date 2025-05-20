@@ -1,5 +1,5 @@
 use crate::types::BoardInfo;
-use crate::use_fetch_boards::use_fetch_boards;
+use crate::hooks::use_fetch_boards;
 use crate::components::{BoardsByCategory, BoardsNavigation, LinkDisplay};
 use yew::prelude::*;
 

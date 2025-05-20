@@ -149,14 +149,13 @@ pub struct BoardPageProps {
 
 #[function_component(BoardPage)]
 pub fn board_page(BoardPageProps { slug }: &BoardPageProps) -> Html {
-    let display_text = format!("You are looking at: /{}/", slug);
     let board = use_fetch_board(slug);
+    let display_text = format!("/{}/ - {}", slug, board.name.clone());
     html! {
         <>
             <BoardsList />
             <main>
                 <h1>{display_text}</h1>
-                <h2>{board.name.clone()}</h2>
                 <p>{board.description.clone()}</p>
                 <PostingForm board={board.clone()} />
                 {if board.threads.len() > 0 {

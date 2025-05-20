@@ -1,6 +1,80 @@
 const http = require("http");
 
+const opPost = {
+  id: 1,
+  author: "",
+  subject: "topic 1",
+  content: ">Imagine creating an image board in 2025",
+  createdAt: "2025-05-18T15:41:20.936326Z",
+};
+
+const lastReplies = [
+  {
+    id: 2,
+    author: "ayanokojimode",
+    subject: "topic 1",
+    content: "sample post 1",
+    createdAt: "2025-05-18T15:41:20.936326Z",
+  },
+  {
+    id: 3,
+    author: "",
+    subject: "topic 2",
+    content: "sample post 2",
+    createdAt: "2025-05-18T15:41:20.936326Z",
+  },
+];
+
+const thread = {
+  lastReplies: lastReplies,
+  opPost: opPost,
+};
+
+const generateRandomName = () => {
+  return Math.random().toString(36).substring(2, 15);
+};
+
+const generateRandomSubject = () => {
+  return Math.random().toString(36).substring(2, 15);
+};
+
+const generateRandomContent = () => {
+  return Math.random().toString(36).substring(2, 15);
+};
+
+const generateRandomCreatedAt = () => {
+  return new Date(Date.now() - Math.random() * 1000 * 60 * 60 * 24).toISOString();
+};
+
+const generateRandomOpPost = () => {
+  return {
+    id: Math.floor(Math.random() * 1000000),
+    author: generateRandomName(),
+    subject: generateRandomSubject(),
+    content: generateRandomContent(),
+    createdAt: generateRandomCreatedAt(),
+  };
+};
+
+const generateRandomLastReplies = (length) => {
+  return Array.from({ length }, (_, i) => ({
+    id: i + 1,
+    author: "",
+    subject: generateRandomSubject(),
+    content: generateRandomContent(),
+    createdAt: generateRandomCreatedAt(),
+  }));
+};
+
+const generateRandomThreads = (length) => {
+  return Array.from({ length }, (_, i) => ({
+    lastReplies: generateRandomLastReplies(Math.floor(Math.random() * 4)),
+    opPost: generateRandomOpPost(),
+  }));
+};
+
 const server = http.createServer((req, res) => {
+  console.log(req.url);
   res.writeHead(200, { "Access-Control-Allow-Origin": "*" });
   // Handle POST request to /post
   if (req.method === "POST" && req.url === "/post") {
@@ -14,33 +88,7 @@ const server = http.createServer((req, res) => {
     const slug = _slug.replace("&", "");
     const id = parseInt(_id?.replace("&", "")) || 0;
     if (id) {
-      res.end(
-        JSON.stringify({
-          lastReplies: [
-            {
-              id: id + 1,
-              author: "ayanokojimode",
-              subject: "topic 1",
-              content: "sample post 1",
-              createdAt: "2025-05-18T15:41:20.936326Z",
-            },
-            {
-              id: id + 2,
-              author: "",
-              subject: "topic 2",
-              content: "sample post 2",
-              createdAt: "2025-05-18T15:41:20.936326Z",
-            },
-          ],
-          opPost: {
-            id: id,
-            author: "",
-            subject: "Test Thread",
-            content: "This is a test thread",
-            createdAt: "2025-05-18T15:41:20.936326Z",
-          },
-        })
-      );
+      res.end(JSON.stringify(thread));
       return;
     }
     res.end(
@@ -50,33 +98,7 @@ const server = http.createServer((req, res) => {
         name: "Random",
         slug: slug,
         description: "Random board",
-        threads: [
-          {
-            lastReplies: [
-              {
-                id: 2,
-                author: "ayanokojimode",
-                subject: "topic 1",
-                content: "sample post 1",
-                createdAt: "2025-05-18T15:41:20.936326Z",
-              },
-              {
-                id: 3,
-                author: "ayanokojimode",
-                subject: "topic 2",
-                content: "sample post 2",
-                createdAt: "2025-05-18T15:41:20.936326Z",
-              },
-            ],
-            opPost: {
-              id: 1,
-              author: "",
-              subject: "Test Thread",
-              content: "This is a test thread",
-              createdAt: "2025-05-18T15:41:20.936326Z",
-            },
-          },
-        ],
+        threads: generateRandomThreads(5),
       })
     );
     return;

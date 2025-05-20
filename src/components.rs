@@ -1,5 +1,6 @@
+use crate::helpers::{create_urbit_name, transform_date};
 use crate::hooks::use_fetch_boards;
-use crate::types::BoardInfo;
+use crate::types::{BoardInfo, Post, Thread};
 use yew::prelude::*;
 
 #[derive(Clone, PartialEq)]
@@ -90,5 +91,100 @@ pub fn boards_navigation(BoardsNavigationProps { board_slugs }: &BoardsNavigatio
             })}
             <span>{ "]" }</span>
         </nav>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct ReplyProps {
+    reply: Post,
+    thread_url: String,
+}
+
+#[function_component(Reply)]
+fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
+    let reply_date = transform_date(&reply.created_at);
+    let reply_name = match &reply.author {
+        author if !author.is_empty() => author.clone(),
+        _ => create_urbit_name(),
+    };
+
+    let reply_url = format!("{}#{}", thread_url, reply.id);
+
+    html! {
+        <div class="thread-post-reply">
+            <img alt="reply" src={"mock"} loading="lazy" width="200" />
+            <div class="thread-post-op-content">
+            <div class="thread-post-op-header">
+                <span class="thread-post-op-subject">{reply.subject.clone()}</span>
+                <span class="thread-post-op-name">{reply_name}</span>
+                <span class="thread-post-op-timestamp">{reply_date}</span>
+                <a href={reply_url.clone()} class="thread-post-op-num">{format!("№{}", reply.id)}</a>
+                </div>
+                <p>{reply.content.clone()}</p>
+            </div>
+        </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct LastRepliesProps {
+    last_replies: Vec<Post>,
+    thread_url: String,
+}
+
+#[function_component(LastReplies)]
+fn last_replies(
+    LastRepliesProps {
+        last_replies,
+        thread_url,
+    }: &LastRepliesProps,
+) -> Html {
+    html! {
+        <div class="thread-post-replies">
+            {if last_replies.len() > 0 {
+                last_replies.iter().map(|reply| {
+                    html! { <Reply reply={reply.clone()} thread_url={thread_url.clone()} /> }
+                }).collect::<Html>()
+            } else {
+                html! { <></> }
+            }}
+        </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+pub struct ThreadPostProps {
+    pub thread: Thread,
+    pub slug: String,
+}
+
+#[function_component(ThreadPost)]
+pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
+    let op_post = thread.op_post.clone();
+    let op_image = "https://i.4cdn.org/k/1747432557629704s.jpg";
+    let thread_date = transform_date(&op_post.created_at);
+    let op_name = match &op_post.author {
+        author if !author.is_empty() => author.clone(),
+        _ => create_urbit_name(),
+    };
+
+    let thread_url = format!("/boards/{}/thread/{}", slug, op_post.id);
+
+    html! {
+        <div class="thread-post">
+            <div class="thread-post-op">
+                <img alt="OP" src={op_image} loading="lazy" width="200" />
+                <div class="thread-post-op-content">
+                    <div class="thread-post-op-header">
+                        <span class="thread-post-op-subject">{op_post.subject}</span>
+                        <span class="thread-post-op-name">{op_name}</span>
+                        <span class="thread-post-op-timestamp">{thread_date}</span>
+                        <a href={thread_url.clone()} class="thread-post-op-num">{format!("№{}", op_post.id)}</a>
+                    </div>
+                    <p>{op_post.content}</p>
+                </div>
+            </div>
+            <LastReplies last_replies={thread.last_replies.clone()} thread_url={thread_url.clone()} />
+        </div>
     }
 }

@@ -1,14 +1,12 @@
 mod app;
-mod board_page;
 mod components;
 mod config;
 mod helpers;
 mod hooks;
-mod thread_page;
+mod pages;
 mod types;
 use app::App;
-use board_page::BoardPage;
-use thread_page::ThreadPage;
+use pages::*;
 use yew::prelude::*;
 use yew_router::prelude::*;
 

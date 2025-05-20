@@ -1,5 +1,4 @@
-use crate::board_page::ThreadPost;
-use crate::components::BoardsList;
+use crate::components::{BoardsList, ThreadPost};
 use crate::hooks::use_fetch_thread;
 use yew::prelude::*;
 

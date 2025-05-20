@@ -1,6 +1,6 @@
-use crate::types::BoardInfo;
-use crate::hooks::use_fetch_boards;
 use crate::components::{BoardsByCategory, BoardsNavigation, LinkDisplay};
+use crate::hooks::use_fetch_boards;
+use crate::types::BoardInfo;
 use yew::prelude::*;
 
 #[function_component(App)]

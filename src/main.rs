@@ -1,14 +1,13 @@
 mod app;
 mod board_page;
+mod components;
 mod config;
 mod create_urbit_name;
+mod hooks;
 mod thread_page;
 mod transform_date;
 mod types;
-mod hooks;
-mod components;
 use app::App;
-use components::BoardsList;
 use board_page::BoardPage;
 use thread_page::ThreadPage;
 use yew::prelude::*;

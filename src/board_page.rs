@@ -1,8 +1,8 @@
+use crate::components::BoardsList;
 use crate::create_urbit_name::create_urbit_name;
+use crate::hooks::use_fetch_board;
 use crate::transform_date::transform_date;
 use crate::types::{Board, Post, Thread};
-use crate::hooks::use_fetch_board;
-use crate::components::BoardsList;
 use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
@@ -86,7 +86,12 @@ struct LastRepliesProps {
 }
 
 #[function_component(LastReplies)]
-fn last_replies(LastRepliesProps { last_replies, thread_url }: &LastRepliesProps) -> Html {
+fn last_replies(
+    LastRepliesProps {
+        last_replies,
+        thread_url,
+    }: &LastRepliesProps,
+) -> Html {
     html! {
         <div class="thread-post-replies">
             {if last_replies.len() > 0 {

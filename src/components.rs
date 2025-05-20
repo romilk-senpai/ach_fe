@@ -1,7 +1,8 @@
-use crate::helpers::{create_urbit_name, transform_date};
+use crate::helpers::{create_urbit_name, parse_text, transform_date};
 use crate::hooks::use_fetch_boards;
 use crate::types::{BoardInfo, Post, Thread};
 use yew::prelude::*;
+use gloo_console::log;
 
 #[derive(Clone, PartialEq)]
 pub enum LinkDisplay {
@@ -170,6 +171,9 @@ pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
 
     let thread_url = format!("/boards/{}/thread/{}", slug, op_post.id);
 
+    let content = parse_text(&op_post.content);
+    log!(&content);
+
     html! {
         <div class="thread-post">
             <div class="thread-post-op">
@@ -181,7 +185,7 @@ pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
                         <span class="thread-post-op-timestamp">{thread_date}</span>
                         <a href={thread_url.clone()} class="thread-post-op-num">{format!("№{}", op_post.id)}</a>
                     </div>
-                    <p>{op_post.content}</p>
+                    <p>{content}</p>
                 </div>
             </div>
             <LastReplies last_replies={thread.last_replies.clone()} thread_url={thread_url.clone()} />

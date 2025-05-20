@@ -1,4 +1,5 @@
 use regex::Regex;
+use yew::prelude::*;
 
 pub fn parse_text(text: &str) -> String {
     let mut html = String::new();
@@ -128,4 +129,15 @@ pub fn parse_inline(text: &str) -> String {
     result = url_regex.replace_all(&result, "<a href='$0'>$0</a>").to_string();
 
     result
+}
+
+#[derive(Properties, PartialEq)]
+pub struct HtmlToYewProps {
+    pub html: String,
+}
+
+#[function_component(HtmlToYew)]
+pub fn html_to_yew(HtmlToYewProps { html }: &HtmlToYewProps) -> Html {
+    let html = html.clone();
+    Html::from_html_unchecked(html.into())
 }

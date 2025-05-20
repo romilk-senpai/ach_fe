@@ -1,4 +1,4 @@
-use crate::helpers::{create_urbit_name, parse_text, transform_date};
+use crate::helpers::{create_urbit_name, parse_text, transform_date, HtmlToYew};
 use crate::hooks::use_fetch_boards;
 use crate::types::{BoardInfo, Post, Thread};
 use yew::prelude::*;
@@ -185,7 +185,7 @@ pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
                         <span class="thread-post-op-timestamp">{thread_date}</span>
                         <a href={thread_url.clone()} class="thread-post-op-num">{format!("№{}", op_post.id)}</a>
                     </div>
-                    <p>{content}</p>
+                    <HtmlToYew html={content.clone()} />
                 </div>
             </div>
             <LastReplies last_replies={thread.last_replies.clone()} thread_url={thread_url.clone()} />

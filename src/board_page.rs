@@ -1,8 +1,7 @@
 use crate::components::BoardsList;
-use crate::create_urbit_name::create_urbit_name;
+use crate::helpers::{create_urbit_name, transform_date};
 use crate::hooks::{use_fetch_board, use_send_post_request};
-use crate::transform_date::transform_date;
-use crate::types::{Board, Post, Thread, FormInfo};
+use crate::types::{Board, FormInfo, Post, Thread};
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 

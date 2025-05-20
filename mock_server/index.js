@@ -49,14 +49,14 @@ const server = http.createServer((req, res) => {
           {
             lastReplies: [
               {
-                id: 1,
+                id: 2,
                 author: "ayanokojimode",
                 subject: "topic 1",
                 content: "sample post 1",
                 createdAt: "2025-05-18T15:41:20.936326Z",
               },
               {
-                id: 2,
+                id: 3,
                 author: "ayanokojimode",
                 subject: "topic 2",
                 content: "sample post 2",

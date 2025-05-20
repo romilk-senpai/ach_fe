@@ -50,15 +50,18 @@ fn posting_form(PostingFormProps { board }: &PostingFormProps) -> Html {
 #[derive(Properties, PartialEq)]
 struct ReplyProps {
     reply: Post,
+    thread_url: String,
 }
 
 #[function_component(Reply)]
-fn reply(ReplyProps { reply }: &ReplyProps) -> Html {
+fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
     let reply_date = transform_date(&reply.created_at);
     let reply_name = match &reply.author {
         author if !author.is_empty() => author.clone(),
         _ => create_urbit_name(),
     };
+
+    let reply_url = format!("{}#{}", thread_url, reply.id);
 
     html! {
         <div class="thread-post-reply">
@@ -68,7 +71,7 @@ fn reply(ReplyProps { reply }: &ReplyProps) -> Html {
                 <span class="thread-post-op-subject">{reply.subject.clone()}</span>
                 <span class="thread-post-op-name">{reply_name}</span>
                 <span class="thread-post-op-timestamp">{reply_date}</span>
-                    <span class="thread-post-op-num">{format!("№{}", reply.id)}</span>
+                <a href={reply_url.clone()} class="thread-post-op-num">{format!("№{}", reply.id)}</a>
                 </div>
                 <p>{reply.content.clone()}</p>
             </div>
@@ -79,15 +82,16 @@ fn reply(ReplyProps { reply }: &ReplyProps) -> Html {
 #[derive(Properties, PartialEq)]
 struct LastRepliesProps {
     last_replies: Vec<Post>,
+    thread_url: String,
 }
 
 #[function_component(LastReplies)]
-fn last_replies(LastRepliesProps { last_replies }: &LastRepliesProps) -> Html {
+fn last_replies(LastRepliesProps { last_replies, thread_url }: &LastRepliesProps) -> Html {
     html! {
         <div class="thread-post-replies">
             {if last_replies.len() > 0 {
                 last_replies.iter().map(|reply| {
-                    html! { <Reply reply={reply.clone()} /> }
+                    html! { <Reply reply={reply.clone()} thread_url={thread_url.clone()} /> }
                 }).collect::<Html>()
             } else {
                 html! { <></> }
@@ -128,7 +132,7 @@ pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
                     <p>{op_post.content}</p>
                 </div>
             </div>
-            <LastReplies last_replies={thread.last_replies.clone()} />
+            <LastReplies last_replies={thread.last_replies.clone()} thread_url={thread_url.clone()} />
         </div>
     }
 }

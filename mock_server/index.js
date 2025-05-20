@@ -5,7 +5,39 @@ const server = http.createServer((req, res) => {
 
   // Handle /boards/:slug route
   if (req.url.startsWith("/board?slug=")) {
-    const slug = req.url.split("=")[1].replace("&", "");
+    const [_, _slug, _id] = req.url.split("=");
+    const slug = _slug.replace("&", "");
+    const id = parseInt(_id?.replace("&", "")) || 0;
+    if (id) {
+      res.end(
+        JSON.stringify({
+          lastReplies: [
+            {
+              id: id + 1,
+              author: "ayanokojimode",
+              subject: "topic 1",
+              content: "sample post 1",
+              createdAt: "2025-05-18T15:41:20.936326Z",
+            },
+            {
+              id: id + 2,
+              author: "",
+              subject: "topic 2",
+              content: "sample post 2",
+              createdAt: "2025-05-18T15:41:20.936326Z",
+            },
+          ],
+          opPost: {
+            id: id,
+            author: "",
+            subject: "Test Thread",
+            content: "This is a test thread",
+            createdAt: "2025-05-18T15:41:20.936326Z",
+          },
+        })
+      );
+      return;
+    }
     res.end(
       JSON.stringify({
         categoryName: "Misc.",

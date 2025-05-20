@@ -7,6 +7,7 @@ mod transform_date;
 mod types;
 mod use_fetch_board;
 mod use_fetch_boards;
+mod use_fetch_thread;
 use app::App;
 use app::BoardsList;
 use board_page::BoardPage;

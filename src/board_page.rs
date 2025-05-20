@@ -97,13 +97,13 @@ fn last_replies(LastRepliesProps { last_replies }: &LastRepliesProps) -> Html {
 }
 
 #[derive(Properties, PartialEq)]
-struct ThreadPostProps {
-    thread: Thread,
-    board: Board,
+pub struct ThreadPostProps {
+    pub thread: Thread,
+    pub slug: String,
 }
 
 #[function_component(ThreadPost)]
-fn thread_post(ThreadPostProps { thread, board }: &ThreadPostProps) -> Html {
+pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
     let op_post = thread.op_post.clone();
     let op_image = "https://i.4cdn.org/k/1747432557629704s.jpg";
     let thread_date = transform_date(&op_post.created_at);
@@ -112,7 +112,7 @@ fn thread_post(ThreadPostProps { thread, board }: &ThreadPostProps) -> Html {
         _ => create_urbit_name(),
     };
 
-    let thread_url = format!("/boards/{}/thread/{}", board.slug, op_post.id);
+    let thread_url = format!("/boards/{}/thread/{}", slug, op_post.id);
 
     html! {
         <div class="thread-post">
@@ -152,7 +152,7 @@ pub fn board_page(BoardPageProps { slug }: &BoardPageProps) -> Html {
                 <PostingForm board={board.clone()} />
                 {if board.threads.len() > 0 {
                     board.threads.iter().map(|thread| {
-                        html! { <ThreadPost thread={thread.clone()} board={board.clone()} /> }
+                        html! { <ThreadPost thread={thread.clone()} slug={slug.clone()} /> }
                     }).collect::<Html>()
                 } else {
                     html! { <p>{ "No threads found" }</p> }

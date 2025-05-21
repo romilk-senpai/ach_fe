@@ -18,7 +18,6 @@ struct PostingFormProps {
 
 #[function_component(PostingForm)]
 fn posting_form(PostingFormProps { board, options }: &PostingFormProps) -> Html {
-    let show_form = use_state(|| false);
     let show_labels = options.as_ref().map_or(true, |o| o.show_labels);
     let form_class = if show_labels {
         "posting-form"
@@ -68,31 +67,45 @@ fn posting_form(PostingFormProps { board, options }: &PostingFormProps) -> Html 
     let oninput_content = oninput_field.clone().reform(|e| (e, "content"));
     let oninput_file = oninput_field.clone().reform(|e| (e, "file"));
 
+    html! {
+        <form class={form_class} {onsubmit}>
+            <div class="form-group">
+                <label for="name">{"Name"}</label>
+                <input type="text" id="name" name="name" placeholder="Name" value={form_info.name.clone()} oninput={oninput_name} />
+            </div>
+            <div class="form-group">
+                <label for="options">{"Options"}</label>
+                <input type="text" id="options" name="options" placeholder="Options" value={form_info.options.clone()} oninput={oninput_options} />
+            </div>
+            <div class="form-group">
+                <label for="subject">{"Subject"}</label>
+                <input type="text" id="subject" name="subject" placeholder="Subject" value={form_info.subject.clone()} oninput={oninput_subject} />
+            </div>
+            <div class="form-group">
+                <label for="content">{"content"}</label>
+                <textarea id="content" name="content" rows="5" placeholder="content" value={form_info.content.clone()} oninput={oninput_content} />
+            </div>
+            <div class="form-group">
+                <label for="file">{"File"}</label>
+                <input type="file" id="file" name="file" placeholder="File" value={form_info.file.clone()} oninput={oninput_file} />
+            </div>
+            <button type="submit">{"Post"}</button>
+        </form>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct StartNewThreadProps {
+    board: Board,
+}
+
+#[function_component(StartNewThread)]
+fn start_new_thread(StartNewThreadProps { board }: &StartNewThreadProps) -> Html {
+    let show_form = use_state(|| false);
+
     if *show_form {
         html! {
-            <form class={form_class} {onsubmit}>
-                <div class="form-group">
-                    <label for="name">{"Name"}</label>
-                    <input type="text" id="name" name="name" placeholder="Name" value={form_info.name.clone()} oninput={oninput_name} />
-                </div>
-                <div class="form-group">
-                    <label for="options">{"Options"}</label>
-                    <input type="text" id="options" name="options" placeholder="Options" value={form_info.options.clone()} oninput={oninput_options} />
-                </div>
-                <div class="form-group">
-                    <label for="subject">{"Subject"}</label>
-                    <input type="text" id="subject" name="subject" placeholder="Subject" value={form_info.subject.clone()} oninput={oninput_subject} />
-                </div>
-                <div class="form-group">
-                    <label for="content">{"content"}</label>
-                    <textarea id="content" name="content" rows="5" placeholder="content" value={form_info.content.clone()} oninput={oninput_content} />
-                </div>
-                <div class="form-group">
-                    <label for="file">{"File"}</label>
-                    <input type="file" id="file" name="file" placeholder="File" value={form_info.file.clone()} oninput={oninput_file} />
-                </div>
-                <button type="submit">{"Post"}</button>
-            </form>
+            <PostingForm board={board.clone()} />
         }
     } else {
         html! {
@@ -116,7 +129,7 @@ pub fn board_page(BoardPageProps { slug }: &BoardPageProps) -> Html {
             <main>
                 <h1>{display_text}</h1>
                 <p>{board.description.clone()}</p>
-                <PostingForm board={board.clone()} />
+                <StartNewThread board={board.clone()} />
                 {if board.threads.len() > 0 {
                     board.threads.iter().map(|thread| {
                         html! { <ThreadPost thread={thread.clone()} slug={slug.clone()} /> }

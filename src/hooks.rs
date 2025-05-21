@@ -10,8 +10,8 @@ pub fn use_send_post_request(form_info: FormInfo) -> Callback<()> {
     let url = format!("{}/post", config.base_url);
 
     let body = format!(
-        "slug={}&name={}&options={}&subject={}&comment={}&file={}",
-        form_info.slug, form_info.name, form_info.options, form_info.subject, form_info.comment, form_info.file
+        "slug={}&name={}&options={}&subject={}&content={}&file={}",
+        form_info.slug, form_info.name, form_info.options, form_info.subject, form_info.content, form_info.file
     );
 
     Callback::from(move |_| {

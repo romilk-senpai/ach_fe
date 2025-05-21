@@ -45,6 +45,6 @@ pub struct FormInfo {
     pub name: String,
     pub options: String,
     pub subject: String,
-    pub comment: String,
+    pub content: String,
     pub file: String,
 }

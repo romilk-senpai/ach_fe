@@ -161,6 +161,10 @@ ul {
   width: 100px;
 }
 
+.posting-form.no-labels .form-group label {
+  display: none;
+}
+
 .posting-form .form-group input {
   flex: 1;
 }

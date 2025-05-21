@@ -185,7 +185,9 @@ pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
                         <span class="thread-post-op-timestamp">{thread_date}</span>
                         <a href={thread_url.clone()} class="thread-post-op-num">{format!("№{}", op_post.id)}</a>
                     </div>
-                    <HtmlToYew html={content.clone()} />
+                    <div class="thread-post-op-content-inner">
+                        <HtmlToYew html={content.clone()} />
+                    </div>
                 </div>
             </div>
             <LastReplies last_replies={thread.last_replies.clone()} thread_url={thread_url.clone()} />

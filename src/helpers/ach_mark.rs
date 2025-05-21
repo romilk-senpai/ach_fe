@@ -27,19 +27,14 @@ pub fn parse_text(text: &str) -> String {
         // Handle quotes
         if line.starts_with('>') {
             if !in_quote {
-                html.push_str("<blockquote>");
+              // a ">" is needed to imply that this is a quote
+                html.push_str("<blockquote>>");
                 in_quote = true;
             }
-            html.push_str(&line[1..].trim());
-            html.push('\n');
-            continue;
-        } else if in_quote {
+            html.push_str(&parse_inline(&line[1..].trim()));
             html.push_str("</blockquote>");
             in_quote = false;
-        } else {
-            // Handle inline formatting for regular text
-            html.push_str(&parse_inline(line));
-            html.push('\n');
+            continue;
         }
 
         // Handle ordered lists
@@ -71,14 +66,15 @@ pub fn parse_text(text: &str) -> String {
             html.push_str("</ul>");
             in_list = false;
         }
+
+        // Handle regular text
+        html.push_str(&parse_inline(line));
+        html.push_str("<br>");
     }
 
     // Close any open tags
     if in_code {
         html.push_str("</code></pre>");
-    }
-    if in_quote {
-        html.push_str("</blockquote>");
     }
     if in_list {
         html.push_str("</ul>");
@@ -106,7 +102,7 @@ pub fn parse_inline(text: &str) -> String {
 
     // Handle spoilers (%%text%%)
     let spoiler_regex = Regex::new(r"%%(.*?)%%").unwrap();
-    result = spoiler_regex.replace_all(&result, "<div class='spoiler'>$1</div>").to_string();
+    result = spoiler_regex.replace_all(&result, "<span class='spoiler'>$1</span>").to_string();
 
     // Handle bold (** or __)
     let bold_regex = Regex::new(r"\*\*(.*?)\*\*|__(.*?)__").unwrap();

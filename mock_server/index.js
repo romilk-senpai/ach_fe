@@ -4,7 +4,7 @@ const opPost = {
   id: 1,
   author: "",
   subject: "topic 1",
-  content: ">Imagine creating an image board in 2025",
+  content: ">creating an image board in 2025 \n Here's a %%spoiler%% and **bold** and *italic* and __underline__",
   createdAt: "2025-05-18T15:41:20.936326Z",
 };
 

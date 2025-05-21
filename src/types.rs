@@ -10,7 +10,7 @@ pub struct BoardInfo {
     pub slug: String,
 }
 
-#[derive(Clone, PartialEq, Deserialize, Default)]
+#[derive(Clone, PartialEq, Deserialize, Default, Debug)]
 pub struct Board {
     #[serde(rename = "categoryName")]
     pub category_id: String,
@@ -21,7 +21,7 @@ pub struct Board {
     pub threads: Vec<Thread>,
 }
 
-#[derive(Clone, PartialEq, Deserialize, Default)]
+#[derive(Clone, PartialEq, Deserialize, Default, Debug)]
 pub struct Thread {
     #[serde(rename = "opPost")]
     pub op_post: Post,
@@ -29,7 +29,7 @@ pub struct Thread {
     pub last_replies: Vec<Post>,
 }
 
-#[derive(Clone, PartialEq, Deserialize, Default)]
+#[derive(Clone, PartialEq, Deserialize, Default, Debug)]
 pub struct Post {
     pub author: String,
     #[serde(rename = "createdAt")]

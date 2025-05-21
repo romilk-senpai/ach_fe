@@ -9,6 +9,7 @@ mod types;
 use app::App;
 use pages::*;
 use quick_reply_component::*;
+use types::{Board, Post};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -36,13 +37,30 @@ fn switch(routes: Route) -> Html {
 
 #[function_component(Main)]
 fn app() -> Html {
-    let quick_reply_settings = use_state(|| QuickReplySettings { open: false });
+    let quick_reply_settings = use_state(|| QuickReplySettings {
+        open: false,
+        board: Board::default(),
+        reply: None,
+        thread_url: None,
+    });
+    let quick_reply_settings_clone = quick_reply_settings.clone();
 
     let quick_reply_context = QuickReplyContext {
         settings: (*quick_reply_settings).clone(),
-        toggle: Callback::from(move |_: MouseEvent| {
+        toggle: Callback::from(move |(reply, thread_url): (Post, String)| {
             quick_reply_settings.set(QuickReplySettings {
                 open: !quick_reply_settings.open,
+                board: Board::default(),
+                reply: Some(reply),
+                thread_url: Some(thread_url),
+            });
+        }),
+        close: Callback::from(move |_: MouseEvent| {
+            quick_reply_settings_clone.set(QuickReplySettings {
+                open: false,
+                board: Board::default(),
+                reply: None,
+                thread_url: None,
             });
         }),
     };

@@ -115,6 +115,20 @@ ul {
   flex: 1;
 }
 
+.thread-post-op-content-inner blockquote {
+  margin-left: 0;
+  color: #6BAA75;
+}
+
+.thread-post-op-content-inner .spoiler {
+  background-color: black;
+  color: black;
+}
+
+.thread-post-op-content-inner .spoiler:hover {
+  color: #f6f6f6;
+}
+
 .thread-post-op-content > p {
   margin: 16px 0;
 }

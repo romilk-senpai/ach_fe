@@ -108,7 +108,7 @@ ul {
 }
 
 .thread-post-op-name {
-  color: #6BAA75;
+  color: #6baa75;
 }
 
 .thread-post-op-content {
@@ -117,7 +117,7 @@ ul {
 
 .thread-post-op-content-inner blockquote {
   margin-left: 0;
-  color: #6BAA75;
+  color: #6baa75;
 }
 
 .thread-post-op-content-inner .spoiler {
@@ -172,6 +172,14 @@ ul {
 .posting-form > button[type="submit"] {
   width: 100%;
   margin: 8px 0;
+}
+
+#quick-reply {
+  top: 10%;
+  right: 0;
+  display: block;
+  position: fixed;
+  padding: 2px;
 }
 
 .container {

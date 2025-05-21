@@ -1,8 +1,9 @@
 use crate::helpers::{create_urbit_name, parse_text, transform_date, HtmlToYew};
 use crate::hooks::use_fetch_boards;
+use crate::quick_reply_component::*;
 use crate::types::{BoardInfo, Post, Thread};
-use yew::prelude::*;
 use gloo_console::log;
+use yew::prelude::*;
 
 #[derive(Clone, PartialEq)]
 pub enum LinkDisplay {
@@ -109,17 +110,23 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
         _ => create_urbit_name(),
     };
 
+    let quick_reply_ctx = use_context::<QuickReplyContext>().expect("no ctx found");
+
     let reply_url = format!("{}#{}", thread_url, reply.id);
 
     html! {
         <div class="thread-post-reply">
             <img alt="reply" src={"mock"} loading="lazy" width="200" />
             <div class="thread-post-op-content">
-            <div class="thread-post-op-header">
-                <span class="thread-post-op-subject">{reply.subject.clone()}</span>
-                <span class="thread-post-op-name">{reply_name}</span>
-                <span class="thread-post-op-timestamp">{reply_date}</span>
-                <a href={reply_url.clone()} class="thread-post-op-num">{format!("№{}", reply.id)}</a>
+                <div class="thread-post-op-header">
+                    <span class="thread-post-op-subject">{reply.subject.clone()}</span>
+                    <span class="thread-post-op-name">{reply_name}</span>
+                    <span class="thread-post-op-timestamp">{reply_date}</span>
+                    <a href={reply_url.clone()}
+                       class="thread-post-op-num"
+                       onclick={quick_reply_ctx.toggle.clone()}>
+                        {format!("№{}", reply.id)}
+                    </a>
                 </div>
                 <p>{reply.content.clone()}</p>
             </div>

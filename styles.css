@@ -125,21 +125,21 @@ ul {
   color: #535bf2;
 }
 
-.thread-post-op-content-inner blockquote {
+.thread-post-content-inner blockquote {
   margin-left: 0;
   color: #6baa75;
 }
 
-.thread-post-op-content-inner .spoiler {
+.thread-post-content-inner .spoiler {
   background-color: black;
   color: black;
 }
 
-.thread-post-op-content-inner .spoiler:hover {
+.thread-post-content-inner .spoiler:hover {
   color: #f6f6f6;
 }
 
-.thread-post-op-content > p {
+.thread-post-content > p {
   margin: 16px 0;
 }
 

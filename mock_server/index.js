@@ -20,7 +20,7 @@ const lastReplies = [
     id: 3,
     author: "",
     subject: "topic 2",
-    content: "sample post 2",
+    content: ">>2 \n >sample post 2",
     createdAt: "2025-05-18T15:41:20.936326Z",
   },
 ];

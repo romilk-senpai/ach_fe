@@ -121,6 +121,9 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
         quick_reply_ctx.toggle.reform(move |_| (reply.clone(), thread_url.clone()))
     };
 
+    let content = parse_text(&reply.content);
+    log!(&content);
+
     html! {
         <div class="thread-post-reply">
             <img alt="reply" src={"mock"} loading="lazy" width="200" />
@@ -136,7 +139,9 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
                     </span>
                     <a href={reply_url.clone()}></a>
                 </div>
-                <p>{reply.content.clone()}</p>
+                <div class="thread-post-content-inner">
+                    <HtmlToYew html={content.clone()} />
+                </div>
             </div>
         </div>
     }
@@ -200,7 +205,7 @@ pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
                         <span class="thread-post-op-timestamp">{thread_date}</span>
                         <a href={thread_url.clone()} class="thread-post-op-num">{format!("№{}", op_post.id)}</a>
                     </div>
-                    <div class="thread-post-op-content-inner">
+                    <div class="thread-post-content-inner">
                         <HtmlToYew html={content.clone()} />
                     </div>
                 </div>

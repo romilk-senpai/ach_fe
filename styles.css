@@ -115,6 +115,16 @@ ul {
   flex: 1;
 }
 
+.thread-post-op-num {
+  cursor: pointer;
+  color: #646cff;
+}
+
+.thread-post-op-num:hover {
+  text-decoration: underline;
+  color: #535bf2;
+}
+
 .thread-post-op-content-inner blockquote {
   margin-left: 0;
   color: #6baa75;

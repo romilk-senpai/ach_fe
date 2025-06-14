@@ -115,6 +115,12 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
 
     let reply_url = format!("{}#{}", thread_url, reply.id);
 
+    let open_quick_reply = {
+        let reply = reply.clone();
+        let thread_url = thread_url.clone();
+        quick_reply_ctx.toggle.reform(move |_| (reply.clone(), thread_url.clone()))
+    };
+
     html! {
         <div class="thread-post-reply">
             <img alt="reply" src={"mock"} loading="lazy" width="200" />
@@ -123,13 +129,11 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
                     <span class="thread-post-op-subject">{reply.subject.clone()}</span>
                     <span class="thread-post-op-name">{reply_name}</span>
                     <span class="thread-post-op-timestamp">{reply_date}</span>
-                    <a href={reply_url.clone()}
+                    <span
                        class="thread-post-op-num"
-                       onclick={let reply = reply.clone(); let thread_url = thread_url.clone();
-                           quick_reply_ctx.toggle.reform(move |_| (reply.clone(), thread_url.clone()))
-                       }>
+                       onclick={open_quick_reply}>
                         {format!("№{}", reply.id)}
-                    </a>
+                    </span>
                 </div>
                 <p>{reply.content.clone()}</p>
             </div>

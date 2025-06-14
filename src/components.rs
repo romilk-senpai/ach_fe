@@ -113,7 +113,7 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
 
     let quick_reply_ctx = use_context::<QuickReplyContext>().expect("no ctx found");
 
-    let reply_url = format!("{}#{}", thread_url, reply.id);
+    let reply_url = format!("#{}", reply.id);
 
     let open_quick_reply = {
         let reply = reply.clone();
@@ -134,6 +134,7 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
                        onclick={open_quick_reply}>
                         {format!("№{}", reply.id)}
                     </span>
+                    <a href={reply_url.clone()}></a>
                 </div>
                 <p>{reply.content.clone()}</p>
             </div>

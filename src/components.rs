@@ -287,7 +287,7 @@ pub fn posting_form(PostingFormProps { board, options }: &PostingFormProps) -> H
                 <input type="text" id="subject" name="subject" placeholder="Subject" value={form_info.subject.clone()} oninput={oninput_subject} />
             </div>
             <div class="form-group">
-                <label for="content">{"content"}</label>
+                <label for="content">{"Content"}</label>
                 <textarea id="content" name="content" rows="5" placeholder="content" value={form_info.content.clone()} oninput={oninput_content} />
             </div>
             <div class="form-group">

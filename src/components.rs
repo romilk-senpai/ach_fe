@@ -125,7 +125,7 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
     log!(&content);
 
     html! {
-        <div class="thread-post-reply">
+        <div class="thread-post-reply" id={reply.id.to_string()} >
             <img alt="reply" src={"mock"} loading="lazy" width="200" />
             <div class="thread-post-op-content">
                 <div class="thread-post-op-header">
@@ -137,7 +137,6 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
                        onclick={open_quick_reply}>
                         {format!("№{}", reply.id)}
                     </span>
-                    <a href={reply_url.clone()}></a>
                 </div>
                 <div class="thread-post-content-inner">
                     <HtmlToYew html={content.clone()} />

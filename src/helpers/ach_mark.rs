@@ -7,6 +7,7 @@ pub fn parse_text(text: &str) -> String {
     let mut in_list = false;
     let mut in_ordered_list = false;
     let mut in_quote = false;
+    let mut in_reply_quote = false;
     let mut in_code = false;
 
     for line in lines {
@@ -22,6 +23,20 @@ pub fn parse_text(text: &str) -> String {
         } else if in_code {
             html.push_str("</code></pre>");
             in_code = false;
+        }
+
+        // Handle reply quotes
+        if line.starts_with(">>") {
+            let post_id = line[2..].trim().parse::<u32>().unwrap();
+            if !in_reply_quote {
+                // a ">>" is needed to imply that this is a reply quote
+                html.push_str(&format!("<a href='#{}'>>>", post_id));
+                in_reply_quote = true;
+            }
+            html.push_str(&parse_inline(&line[2..].trim()));
+            html.push_str("</a>");
+            in_reply_quote = false;
+            continue;
         }
 
         // Handle quotes

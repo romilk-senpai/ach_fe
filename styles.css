@@ -99,6 +99,10 @@ ul {
   background-color: #282a2e;
 }
 
+.thread-post-reply:target {
+  background: #1d1d21;
+}
+
 .thread-post-op-header {
   display: flex;
   flex-direction: row;

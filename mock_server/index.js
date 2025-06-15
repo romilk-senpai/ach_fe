@@ -1,35 +1,5 @@
 const http = require("http");
 
-const opPost = {
-  id: 1,
-  author: "",
-  subject: "topic 1",
-  content: ">creating an image board in 2025 \n Here's a %%spoiler%% and **bold** and *italic* and __underline__",
-  createdAt: "2025-05-18T15:41:20.936326Z",
-};
-
-const lastReplies = [
-  {
-    id: 2,
-    author: "ayanokojimode",
-    subject: "topic 1",
-    content: "sample post 1",
-    createdAt: "2025-05-18T15:41:20.936326Z",
-  },
-  {
-    id: 3,
-    author: "",
-    subject: "topic 2",
-    content: ">>2 \n >sample post 2",
-    createdAt: "2025-05-18T15:41:20.936326Z",
-  },
-];
-
-const thread = {
-  lastReplies: lastReplies,
-  opPost: opPost,
-};
-
 const generateRandomName = () => {
   return Math.random().toString(36).substring(2, 15);
 };
@@ -71,6 +41,37 @@ const generateRandomThreads = (length) => {
     lastReplies: generateRandomLastReplies(Math.floor(Math.random() * 4)),
     opPost: generateRandomOpPost(),
   }));
+};
+
+const opPost = {
+  id: 1,
+  author: "",
+  subject: "topic 1",
+  content: ">creating an image board in 2025 \n Here's a %%spoiler%% and **bold** and *italic* and __underline__",
+  createdAt: "2025-05-18T15:41:20.936326Z",
+};
+
+const lastReplies = [
+  ...generateRandomLastReplies(9).filter((_, i) => i !== 0),
+  {
+    id: 9,
+    author: "ayanokojimode",
+    subject: "topic 1",
+    content: "sample post 1",
+    createdAt: "2025-05-18T15:41:20.936326Z",
+  },
+  {
+    id: 10,
+    author: "",
+    subject: "topic 2",
+    content: ">>2 \n >sample post 2",
+    createdAt: "2025-05-18T15:41:20.936326Z",
+  },
+];
+
+const thread = {
+  lastReplies: lastReplies,
+  opPost: opPost,
 };
 
 const server = http.createServer((req, res) => {

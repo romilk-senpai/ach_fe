@@ -47,7 +47,7 @@ const opPost = {
   id: 1,
   author: "",
   subject: "topic 1",
-  content: ">creating an image board in 2025 \n Here's a %%spoiler%% and **bold** and *italic* and __underline__",
+  content: ">creating an image board in 2025 \n >mfw \n Here's a %%spoiler%% \n and **bold** and *italic* and __underline__",
   createdAt: "2025-05-18T15:41:20.936326Z",
 };
 
@@ -64,7 +64,7 @@ const lastReplies = [
     id: 10,
     author: "",
     subject: "topic 2",
-    content: ">>2 \n >sample post 2",
+    content: ">>2 \n >>3 \n >sample post 2",
     createdAt: "2025-05-18T15:41:20.936326Z",
   },
 ];

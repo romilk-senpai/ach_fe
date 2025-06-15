@@ -26,30 +26,57 @@ pub fn parse_text(text: &str) -> String {
         }
 
         // Handle reply quotes
-        if line.starts_with(">>") {
-            let post_id = line[2..].trim().parse::<u32>().unwrap();
-            if !in_reply_quote {
-                // a ">>" is needed to imply that this is a reply quote
+        if line.contains(">>") {
+            let parts: Vec<&str> = line.split(">>").collect();
+            for part in parts.iter().skip(1) {
+                let post_id = part.trim().parse::<u32>().unwrap();
                 html.push_str(&format!("<a href='#{}'>>>", post_id));
-                in_reply_quote = true;
+                html.push_str(&parse_inline(part.trim()));
+                html.push_str("</a><br>");
             }
-            html.push_str(&parse_inline(&line[2..].trim()));
-            html.push_str("</a>");
-            in_reply_quote = false;
             continue;
         }
 
         // Handle quotes
         if line.starts_with('>') {
-            if !in_quote {
-              // a ">" is needed to imply that this is a quote
-                html.push_str("<blockquote>>");
-                in_quote = true;
-            }
+            html.push_str("<blockquote>>");
             html.push_str(&parse_inline(&line[1..].trim()));
-            html.push_str("</blockquote>");
-            in_quote = false;
+            html.push_str("</blockquote><br>");
             continue;
+        }
+
+        // Handle regular text
+        let parts: Vec<&str> = line.split('>').collect();
+        if parts.len() > 1 {
+            // First part before any '>'
+            if !parts[0].is_empty() {
+                html.push_str(&parse_inline(parts[0]));
+            }
+            // Handle each quoted part
+            for part in parts.iter().skip(1) {
+                if part.starts_with('>') {
+                    // Handle reply quotes in the middle of the line
+                    let post_id = part[1..].trim().parse::<u32>().unwrap();
+                    html.push_str(&format!("<a href='#{}'>>>", post_id));
+                    html.push_str(&parse_inline(&part[1..].trim()));
+                    html.push_str("</a>");
+                } else if part.starts_with(">>") {
+                    // Handle reply quotes that start with >>
+                    let post_id = part[2..].trim().parse::<u32>().unwrap();
+                    html.push_str(&format!("<a href='#{}'>>>", post_id));
+                    html.push_str(&parse_inline(&part[2..].trim()));
+                    html.push_str("</a>");
+                } else {
+                    html.push_str("<blockquote>>");
+                    html.push_str(&parse_inline(part.trim()));
+                    html.push_str("</blockquote>");
+                }
+            }
+        } else {
+            html.push_str(&parse_inline(line));
+        }
+        if !line.is_empty() {
+            html.push_str("<br>");
         }
 
         // Handle ordered lists
@@ -81,10 +108,6 @@ pub fn parse_text(text: &str) -> String {
             html.push_str("</ul>");
             in_list = false;
         }
-
-        // Handle regular text
-        html.push_str(&parse_inline(line));
-        html.push_str("<br>");
     }
 
     // Close any open tags

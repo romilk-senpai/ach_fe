@@ -2,7 +2,7 @@ use crate::helpers::{create_urbit_name, parse_text, transform_date, HtmlToYew};
 use crate::hooks::{use_fetch_boards, use_send_post_request};
 use crate::quick_reply_component::*;
 use crate::types::{Board, BoardInfo, FormInfo, Post, Thread};
-use gloo_console::log;
+// use gloo_console::log;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
@@ -113,7 +113,7 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
 
     let quick_reply_ctx = use_context::<QuickReplyContext>().expect("no ctx found");
 
-    let reply_url = format!("#{}", reply.id);
+    // let reply_url = format!("#{}", reply.id);
 
     let open_quick_reply = {
         let reply = reply.clone();
@@ -122,7 +122,7 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
     };
 
     let content = parse_text(&reply.content);
-    log!(&content);
+    // log!(&content);
 
     html! {
         <div class="thread-post-reply" id={reply.id.to_string()} >
@@ -191,7 +191,7 @@ pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
     let thread_url = format!("/boards/{}/thread/{}", slug, op_post.id);
 
     let content = parse_text(&op_post.content);
-    log!(&content);
+    // log!(&content);
 
     html! {
         <div class="thread-post">

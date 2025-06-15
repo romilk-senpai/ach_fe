@@ -6,8 +6,8 @@ pub fn parse_text(text: &str) -> String {
     let lines: Vec<&str> = text.lines().collect();
     let mut in_list = false;
     let mut in_ordered_list = false;
-    let mut in_quote = false;
-    let mut in_reply_quote = false;
+    // let mut in_quote = false;
+    // let mut in_reply_quote = false;
     let mut in_code = false;
 
     for line in lines {

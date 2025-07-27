@@ -37,6 +37,7 @@ pub struct Post {
     pub id: i32,
     pub subject: Option<String>,
     pub content: String,
+    pub media: Option<Vec<i32>>
 }
 
 #[derive(Properties, PartialEq, Clone)]

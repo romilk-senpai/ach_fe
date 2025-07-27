@@ -105,20 +105,22 @@ struct ReplyProps {
 
 #[function_component(Reply)]
 fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
+    use crate::config::use_config;
+    let config = use_config();
     let reply_date = transform_date(&reply.created_at);
     let reply_name = match &reply.author {
         author if !author.is_empty() => author.clone(),
         _ => create_urbit_name(),
     };
 
+    let image: Option<i32> = reply.media.as_ref().and_then(|v| v.get(0)).copied();
     let quick_reply_ctx = use_context::<QuickReplyContext>().expect("no ctx found");
-
-    // let reply_url = format!("#{}", reply.id);
-
     let open_quick_reply = {
         let reply = reply.clone();
         let thread_url = thread_url.clone();
-        quick_reply_ctx.toggle.reform(move |_| (reply.clone(), thread_url.clone()))
+        quick_reply_ctx
+            .toggle
+            .reform(move |_| (reply.clone(), thread_url.clone()))
     };
 
     let content = parse_text(&reply.content);
@@ -126,7 +128,11 @@ fn reply(ReplyProps { reply, thread_url }: &ReplyProps) -> Html {
 
     html! {
         <div class="thread-post-reply" id={reply.id.to_string()} >
-            <img alt="reply" src={"mock"} loading="lazy" width="200" />
+            {
+                image.map(|id| html! {
+                    <img alt="reply" src={format!("{}/downloadMedia?mediaId={}", config.base_url, id)} loading="lazy" width="200" />
+                }).unwrap_or(html! {})
+            }
             <div class="thread-post-op-content">
                 <div class="thread-post-op-header">
                     <span class="thread-post-op-subject">{reply.subject.clone()}</span>
@@ -180,8 +186,10 @@ pub struct ThreadPostProps {
 
 #[function_component(ThreadPost)]
 pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
+    use crate::config::use_config;
+    let config = use_config();
     let op_post = thread.op_post.clone();
-    let op_image = "https://i.4cdn.org/k/1747432557629704s.jpg";
+    let image: Option<i32> = op_post.media.as_ref().and_then(|v| v.get(0)).copied();
     let thread_date = transform_date(&op_post.created_at);
     let op_name = match &op_post.author {
         author if !author.is_empty() => author.clone(),
@@ -189,14 +197,16 @@ pub fn thread_post(ThreadPostProps { thread, slug }: &ThreadPostProps) -> Html {
     };
 
     let thread_url = format!("/boards/{}/thread/{}", slug, op_post.id);
-
     let content = parse_text(&op_post.content);
-    // log!(&content);
 
     html! {
         <div class="thread-post">
             <div class="thread-post-op">
-                <img alt="OP" src={op_image} loading="lazy" width="200" />
+                {
+                    image.map(|id| html! {
+                        <img alt="OP" src={format!("{}/downloadMedia?mediaId={}", config.base_url, id)} loading="lazy" width="200" />
+                    }).unwrap_or(html! {})
+                }
                 <div class="thread-post-op-content">
                     <div class="thread-post-op-header">
                         <span class="thread-post-op-subject">{op_post.subject}</span>
@@ -303,3 +313,4 @@ pub fn posting_form(PostingFormProps { board, options }: &PostingFormProps) -> H
         </form>
     }
 }
+
